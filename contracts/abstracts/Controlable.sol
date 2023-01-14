@@ -23,4 +23,8 @@ abstract contract Controlable is Ownable {
         // Disable this function
     }
 
+    function mintStarted() public view virtual returns (bool) {
+        return _startBlock > 0 && block.number >= _startBlock;
+    }
+
 }
