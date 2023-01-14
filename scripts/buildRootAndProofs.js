@@ -19,7 +19,7 @@ async function main() {
 
     const addressesWhiteList = [];
     for (let i = 11; i <= 20; i++) {
-        addressesWL.push(`0x00000000000000000000000000000000000000${i}`);
+        addressesWhiteList.push(`0x00000000000000000000000000000000000000${i}`);
     }
 
     const rootWhiteList = await functions.returnBuildRoot(addressesWhiteList);
@@ -38,7 +38,7 @@ async function main() {
         solidityTestUsersWhiteList += `  address user${i} = 0x00000000000000000000000000000000000000${i};\n`;
         solidityProofsWhiteList += `    // Proofs for WL user ${i}\n`;
         for (let j = 0; j < proofs.length; j++) {
-            solidityProofs_WL += `    _ADDRESS${i}_WL_PROOFS.push(bytes32(${proofs[j]}));\n`;
+            solidityProofsWhiteList += `    _ADDRESS${i}_WL_PROOFS.push(bytes32(${proofs[j]}));\n`;
         }
     }
     for (let i = 0; i < functions.getRandomInt(1, 10); i++) {
@@ -52,7 +52,7 @@ pragma solidity ^0.8.0;
 
 contract TestData {
   // Data use for the tests.
-  bytes32 public constant _ROOT_WHITELIST = bytes32(${rootWL});
+  bytes32 public constant _ROOT_WHITELIST = bytes32(${rootWhiteList});
 
   // Test Users - WHITELIST
 ${solidityTestUsersWhiteList}
