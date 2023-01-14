@@ -12,3 +12,4 @@ contractsFlatten
 
 .env.development
 .env.test
+.wip
