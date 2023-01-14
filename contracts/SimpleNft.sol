@@ -21,7 +21,7 @@ contract SimpleNft is Controlable, Mintable, WListable {
 
     }
     
-    modifer ownerOrMintStarted() {
+    modifier ownerOrMintStarted() {
         require(owner() == _msgSender() || mintStarted(), "Controlable: caller is not the owner or mint not started");
         _;
     }
