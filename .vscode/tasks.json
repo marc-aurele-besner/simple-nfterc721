@@ -1,0 +1,69 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "start",
+            "runOptions": {
+                "runOn": "folderOpen"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": ["build", "flatten", "test"]
+        },
+        {
+            "label": "build",
+            "type": "shell",
+            "windows": {
+                "command": "npx hardhat run scripts/buildAbi.js ;; npx hardhat run scripts/buildRootAndProofs.js"
+            },
+            "linux": {
+                "command": "npx hardhat run scripts/buildAbi.js && npx hardhat run scripts/buildRootAndProofs.js"
+            },
+            "osx": {
+                "command": "npx hardhat run scripts/buildAbi.js && npx hardhat run scripts/buildRootAndProofs.js"
+            },
+            "presentation": {
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "test",
+            "type": "shell",
+            "windows": {
+                "command": "npm run build ;; npx hardhat test ; forge test"
+            },
+            "linux": {
+                "command": "npm run build && npx hardhat test && forge test"
+            },
+            "osx": {
+                "command": "npm run build && npx hardhat test && forge test"
+            },
+            "presentation": {
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "coverage",
+            "type": "shell",
+            "command": "npx hardhat coverage",
+            "presentation": {
+                "panel": "dedicated"
+            }
+        },
+        {
+            "label": "flatten",
+            "type": "shell",
+            "windows": {
+                "command": "mkdir -p contractsFlatten ;; npx hardhat flatten > contractsFlatten/Flat.sol ;; npx hardhat flatten contracts/SimpleNft.sol > contractsFlatten/SimpleNftFlat.sol"
+            },
+            "linux": {
+                "command": "mkdir -p contractsFlatten && npx hardhat flatten > contractsFlatten/Flat.sol && npx hardhat flatten contracts/SimpleNft.sol > contractsFlatten/SimpleNftFlat.sol"
+            },
+            "osx": {
+                "command": "mkdir -p contractsFlatten && npx hardhat flatten > contractsFlatten/Flat.sol && npx hardhat flatten contracts/SimpleNft.sol > contractsFlatten/SimpleNftFlat.sol"
+            },
+            "presentation": {
+                "panel": "dedicated"
+            }
+        }
+    ]
+}
