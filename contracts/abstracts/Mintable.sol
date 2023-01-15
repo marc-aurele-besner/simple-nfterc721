@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
 // TotalSupply: 1000
@@ -11,8 +11,6 @@ pragma solidity ^0.8.9;
 // WL: 2 per address
 // Public: 2 per address (WL can min public also)
 
-
 abstract contract Mintable {
-    
-    
+
 }
