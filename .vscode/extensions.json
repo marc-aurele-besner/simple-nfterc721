@@ -4,6 +4,8 @@
     "tintinweb.solidity-visual-auditor",
     "idrabenia.solidity-solhint",
     "esbenp.prettier-vscode",
-    "dbaeumer.vscode-eslint"
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "streetsidesoftware.code-spell-checker"
   ]
 }
