@@ -5,7 +5,7 @@
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.workingDirectories": [{ "mode": "auto" }],
-  "window.zoomLevel": 1,
+  "window.zoomLevel": 2,
   "editor.tabSize": 2,
   "editor.formatOnSave": true
 }
