@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
 // TotalSupply: 1000
@@ -11,16 +11,18 @@ pragma solidity ^0.8.9;
 // WL: 2 per address
 // Public: 2 per address (WL can min public also)
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import '@openzeppelin/contracts/access/Ownable.sol';
 
 abstract contract Controlable is Ownable {
-    uint256 _startBlock;
-    uint256 _startWhitelistBlock;
-    uint256 _contractURI;
-    
+  uint256 _startBlock;
+  uint256 _startWhitelistBlock;
+  uint256 _contractURI;
 
-    function transferOwnership(address newOwner) public override onlyOwner {
-        // Disable this function
-    }
+  function transferOwnership(address newOwner) public override onlyOwner {
+    // Disable this function
+  }
 
+  function mintStarted() public view virtual returns (bool) {
+    return _startBlock > 0 && block.number >= _startBlock;
+  }
 }

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
 // TotalSupply: 1000
@@ -11,42 +11,27 @@ pragma solidity ^0.8.9;
 // WL: 2 per address
 // Public: 2 per address (WL can min public also)
 
-import "./abstracts/Controlable.sol";
-import "./abstracts/Mintable.sol";
-import "./abstracts/WListable.sol";
+import './abstracts/Controlable.sol';
+import './abstracts/Mintable.sol';
+import './abstracts/WListable.sol';
 
 contract SimpleNft is Controlable, Mintable, WListable {
-    
-    constructor() {
+  constructor() {}
 
-    }
-    
-    modifer ownerOrMintStarted() {
-        require(owner() == _msgSender() || mintStarted(), "Controlable: caller is not the owner or mint not started");
-        _;
-    }
-        
-    function mint(uint256 quantity) external ownerOrMintStarted {
-        
-    }
+  modifier ownerOrMintStarted() {
+    require(owner() == _msgSender() || mintStarted(), 'Controlable: caller is not the owner or mint not started');
+    _;
+  }
 
-    function mintWhiteList(uint256 quantity) external {
-        
-    }
+  function mint(uint256 quantity) external ownerOrMintStarted {}
 
-    function tokenURI(uint256 tokenId) public view returns (string memory) {
-        
-    }
+  function mintWhiteList(uint256 quantity) external {}
 
-    function _baseURI() internal view virtual returns (string memory) {
-        
-    }
+  function tokenURI(uint256 tokenId) public view returns (string memory) {}
 
-    function _extensionURI() internal view virtual returns (string memory) {
-        
-    }
+  function _baseURI() internal view virtual returns (string memory) {}
 
-    function updateWhitelistRoot(bytes32 newRoot) external onlyOwner {
-        
-    }
+  function _extensionURI() internal view virtual returns (string memory) {}
+
+  function updateWhitelistRoot(bytes32 newRoot) external onlyOwner {}
 }
