@@ -22,8 +22,8 @@ abstract contract WListable is Context {
    * @param proofs - Array of bytes32 hashes proofs
    * @return bool - True if proofs are valid
    */
-  function _isWhitelistValid(bytes32[] memory proofs) internal view virtual returns (bool) {
-    // require(condition, 'WListable: Invalid proofs');
+  function _isWhitelistValid(bytes32[] calldata proofs) internal view virtual returns (bool) {
+    return MerkleProof.verifyCalldata(proofs, root, keccak256(abi.encodePacked(msg.sender)));
   }
 
   /**
@@ -31,11 +31,15 @@ abstract contract WListable is Context {
    * @param proofs - Array of bytes32 hashes proofs
    * @return bool - True if proofs are valid
    */
-  function isWhitelistValid(bytes32[] memory proofs) external view virtual returns (bool) {}
+  function isWhitelistValid(bytes32[] calldata proofs) external view virtual returns (bool) {
+    return _isWhitelistValid(proofs);
+  }
 
   /**
-   * @dev Update OG Root - Internal function
+   * @dev Update Whitelist Root - Internal function
    * @param _root - New root
    */
-  function _updateWhitelistRoot(bytes32 _root) internal virtual {}
+  function _updateWhitelistRoot(bytes32 _root) internal virtual {
+    root = _root;
+  }
 }

@@ -45,14 +45,14 @@ abstract contract Controlable is Ownable {
    * @dev Verify if minting has started for whitelist
    */
   function isWhiteListStarted() public view virtual returns (bool) {
-    return _startWhitelistTimestamp >= block.timestamp;
+    return _startWhitelistTimestamp <= block.timestamp;
   }
 
   /**
    * @dev Verify if minting has started
    */
   function isStarted() public view virtual returns (bool) {
-    return _startTimestamp >= block.timestamp;
+    return _startTimestamp <= block.timestamp;
   }
 
   /**

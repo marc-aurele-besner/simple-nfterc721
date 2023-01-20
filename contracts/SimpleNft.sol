@@ -23,13 +23,27 @@ contract SimpleNft is Controlable, WListable, Mintable {
   constructor(string memory name_, string memory symbol_, uint256 maxSupply_) Mintable(name_, symbol_, maxSupply_) {}
 
   modifier ownerOrMintStarted() {
-    require(owner() == _msgSender() || isStarted(), 'Controlable: caller is not the owner or mint not started');
+    require(owner() == _msgSender() || isStarted(), 'SimpleNft: caller is not the owner or mint not started');
     _;
   }
 
-  function mint(uint256 quantity) external ownerOrMintStarted {}
+  modifier witeListMintStarted() {
+    require(isWhiteListStarted(), 'SimpleNft: whiteList mint not started');
+    _;
+  }
 
-  function mintWhiteList(uint256 quantity) external {}
+  function mint(uint8 quantity) external ownerOrMintStarted {
+    (bool success, ) = payable(address(this)).call{ value: 0.5 ether }('');
+    require(success, 'SimpleNft: ETH transfer failed');
+    _mintPublic(_msgSender(), quantity);
+  }
+
+  function mintWhiteList(uint8 quantity, bytes32[] calldata proofs) external witeListMintStarted {
+    require(_isWhitelistValid(proofs), 'SimpleNft: invalid proof');
+    (bool success, ) = payable(address(this)).call{ value: 0.5 ether }('');
+    require(success, 'SimpleNft: ETH transfer failed');
+    _mintWhitelist(_msgSender(), quantity);
+  }
 
   function tokenURI(uint256 tokenId) public view override returns (string memory) {
     require(_exists(tokenId), 'SimpleNft: URI query for nonexistent token');
