@@ -51,5 +51,7 @@ contract SimpleNft is Controlable, WListable, Mintable {
     return bytes(baseURI_).length != 0 ? string(abi.encodePacked(baseURI_, tokenId, _extensionURI())) : '';
   }
 
-  function updateWhitelistRoot(bytes32 newRoot) external onlyOwner {}
+  function updateWhitelistRoot(bytes32 newRoot) external onlyOwner {
+    _updateWhitelistRoot(newRoot);
+  }
 }

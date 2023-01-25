@@ -18,21 +18,21 @@ abstract contract WListable is Context {
   bytes32 private root;
 
   /**
-   * @dev Verify proofs against root for caller - Internal function
-   * @param proofs - Array of bytes32 hashes proofs
-   * @return bool - True if proofs are valid
-   */
-  function _isWhitelistValid(bytes32[] calldata proofs) internal view virtual returns (bool) {
-    return MerkleProof.verifyCalldata(proofs, root, keccak256(abi.encodePacked(msg.sender)));
-  }
-
-  /**
    * @dev Verify proofs against root for caller
    * @param proofs - Array of bytes32 hashes proofs
    * @return bool - True if proofs are valid
    */
   function isWhitelistValid(bytes32[] calldata proofs) external view virtual returns (bool) {
     return _isWhitelistValid(proofs);
+  }
+
+  /**
+   * @dev Verify proofs against root for caller - Internal function
+   * @param proofs - Array of bytes32 hashes proofs
+   * @return bool - True if proofs are valid
+   */
+  function _isWhitelistValid(bytes32[] calldata proofs) internal view virtual returns (bool) {
+    return MerkleProof.verifyCalldata(proofs, root, keccak256(abi.encodePacked(msg.sender)));
   }
 
   /**

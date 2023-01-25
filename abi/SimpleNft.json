@@ -287,9 +287,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint8",
         "name": "quantity",
-        "type": "uint256"
+        "type": "uint8"
       }
     ],
     "name": "mint",
@@ -300,9 +300,14 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint8",
         "name": "quantity",
-        "type": "uint256"
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32[]",
+        "name": "proofs",
+        "type": "bytes32[]"
       }
     ],
     "name": "mintWhiteList",

@@ -14,6 +14,8 @@ pragma solidity ^0.8.9;
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 
+import 'hardhat/console.sol';
+
 abstract contract Controlable is Ownable {
   uint256 private _startTimestamp;
   uint256 private _startWhitelistTimestamp;
@@ -45,14 +47,14 @@ abstract contract Controlable is Ownable {
    * @dev Verify if minting has started for whitelist
    */
   function isWhiteListStarted() public view virtual returns (bool) {
-    return _startWhitelistTimestamp <= block.timestamp;
+    return _startWhitelistTimestamp > 0 && _startWhitelistTimestamp <= block.timestamp;
   }
 
   /**
    * @dev Verify if minting has started
    */
   function isStarted() public view virtual returns (bool) {
-    return _startTimestamp <= block.timestamp;
+    return _startTimestamp > 0 && _startTimestamp <= block.timestamp;
   }
 
   /**
@@ -63,7 +65,7 @@ abstract contract Controlable is Ownable {
     require(timestamp_ >= block.timestamp, "Controlable: Public minting can't start in the past");
     require(timestamp_ > timestampWL_, "Controlable: Public minting can't start before whitelist minting");
     _startTimestamp = timestamp_;
-    _startWhitelistTimestamp = timestamp_;
+    _startWhitelistTimestamp = timestampWL_;
   }
 
   /**
