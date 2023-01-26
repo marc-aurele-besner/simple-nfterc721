@@ -20,7 +20,9 @@ contract SimpleNft_test is Helper {
 
   function test_SimpleNft_basic_canWeStartMinting() public {
     help_startMinting();
-    // assertTrue(nftContract.isStarted(), 'isStarted');
-    // assertTrue(!nftContract.isWhiteListStarted(), 'isWhiteListStarted');
+    assertTrue(nftContract.isWhiteListStarted(), 'isWhiteListStarted');
+    assertTrue(!nftContract.isStarted(), 'isStarted');
+    vm.warp(block.timestamp + 1000);
+    assertTrue(nftContract.isStarted(), 'isStarted');
   }
 }

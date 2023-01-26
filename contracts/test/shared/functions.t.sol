@@ -56,7 +56,8 @@ contract Functions is Constants, Errors, TestStorage {
     vm.prank(prank_);
     verify_revertCall(revertType_);
     nftContract.startMinting(timestamp_, timestampWL_);
-    if (revertType_ == Errors.RevertStatus.Success) assertTrue(nftContract.isStarted());
+    if (revertType_ == Errors.RevertStatus.Success && timestampWL_ <= block.timestamp) assertTrue(nftContract.isWhiteListStarted());
+    if (revertType_ == Errors.RevertStatus.Success && timestamp_ <= block.timestamp) assertTrue(nftContract.isStarted());
   }
 
   function help_startMinting(address prank_, uint256 timestamp_, uint256 timestampWL_) internal {
