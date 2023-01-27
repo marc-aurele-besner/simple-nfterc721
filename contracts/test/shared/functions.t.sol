@@ -27,8 +27,8 @@ contract Functions is Constants, Errors, TestStorage {
     nftContract = new SimpleNft(NAME_ERC721, SYMBOL_ERC721, MAX_SUPPLY_ERC721);
 
     vm.stopPrank();
-    vm.roll(block.timestamp + 1);
-    vm.warp(block.number + 100);
+    vm.roll(block.number + 1);
+    vm.warp(block.timestamp + 100);
 
     return nftContract;
   }
