@@ -78,13 +78,9 @@ const returnCurrentTimestamp = async () => {
   return block.timestamp;
 };
 
-const help_startMinting = async (contract, sender, startPublicTimestamp, startWhiteListTimestamp, isValid) => {
+const help_startMinting = async (contract, sender, startPublicTimestamp, startWhiteListTimestamp, error) => {
   const input = await contract.connect(sender).populateTransaction.startMinting(startPublicTimestamp, startWhiteListTimestamp);
-  if (isValid) {
-    await checkRawTxnResult(input, sender);
-  } else {
-    await checkRawTxnResult(input, sender, 'Ownable: caller is not the owner');
-  }
+  await checkRawTxnResult(input, sender, error);
 };
 
 const help_isWhitelistValid = async (contract, sender, allAddresses, isValid) => {
