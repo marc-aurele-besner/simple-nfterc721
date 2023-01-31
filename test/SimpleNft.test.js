@@ -3,6 +3,7 @@ const { anyValue } = require('@nomicfoundation/hardhat-chai-matchers/withArgs');
 const { expect } = require('chai');
 
 const Helper = require('./shared');
+const { ethers } = require('hardhat');
 let contract;
 
 describe('Simple NFT', function () {
@@ -46,13 +47,43 @@ describe('Simple NFT', function () {
     await Helper.help_isWhitelistValid(contract, user3, [...Helper.WhiteList, user1.address, user2.address, user3.address], false);
   });
 
-  // it('Does the contract name match the name use at deployment ?', async function () {
-  //   // Add test logic here
-  // });
+  it('Does the contract return a baseURI ?', async function () {
+    const baseURI = await contract.baseURI();
+    console.log('baseURI', baseURI);
 
-  // it('Does the contract symbol match the symbol use at deployment ?', async function () {
-  //   // Add test logic here
-  // });
+    // const input = await contract.connect(user1).populateTransaction.setBaseURI('test base uri');
+    // await Helper.checkRawTxnResult(input, user1);
+    await contract.setBaseURI('test base uri');
+
+    const baseURI_finale = await contract.baseURI();
+    console.log('baseURI_finale', baseURI_finale);
+  });
+
+  it('Does a user has a isApprovedForAll ?', async function () {
+    const isApprovedForAll = await contract.isApprovedForAll(owner.address, user1.address);
+    console.log('isApprovedForAll', isApprovedForAll);
+
+    await contract.setApprovalForAll(user1.address, true);
+
+    const isApprovedForAll_final = await contract.isApprovedForAll(owner.address, user1.address);
+    console.log('isApprovedForAll_final', isApprovedForAll_final);
+    // Add test logic here
+  });
+
+  it.only('Does a user has a getApproved ?', async function () {
+    await contract.mint(1, {
+      value: ethers.utils.parseEther('0.5')
+    });
+
+    const getApproved = await contract.getApproved(0);
+    console.log('getApproved', getApproved);
+
+    await contract.approve(user1.address, 0);
+
+    const approve = await contract.getApproved(0);
+    console.log('approve', approve);
+    // Add test logic here
+  });
 
   // it('Does contract owner can update contract uri? (should be)', async function () {
   //   // Add test logic here

@@ -21,8 +21,15 @@ contract SimpleNft_test is Helper {
   function test_SimpleNft_basic_canWeStartMinting() public {
     help_startMinting();
     assertTrue(nftContract.isWhiteListStarted(), 'isWhiteListStarted');
-    assertTrue(!nftContract.isStarted(), 'isStarted');
+    assertTrue(!nftContract.isStarted(), 'isStarted.1');
     vm.warp(block.timestamp + 1000);
-    assertTrue(nftContract.isStarted(), 'isStarted');
+    assertTrue(nftContract.isStarted(), 'isStarted.2');
+  }
+
+  function test_SimpleNft_basic_baseUri() public {
+    assertEq(nftContract.baseURI(), '');
+    vm.prank(ADMIN);
+    nftContract.setBaseURI('test baseURI');
+    assertEq(nftContract.baseURI(), 'test baseURI');
   }
 }
