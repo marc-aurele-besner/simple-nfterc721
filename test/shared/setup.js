@@ -21,7 +21,7 @@ const setupContract = async (addAddressesToWL = []) => {
 };
 
 const setupProviderAndAccount = async () => {
-  if (network.name === 'hardhat') provider = ethers.provider;
+  if (network.name === 'hardhat' || network.name === 'localhost') provider = ethers.provider;
   else provider = new ethers.providers.JsonRpcProvider(network.config.url);
 
   const owner = new ethers.Wallet(ethers.Wallet.fromMnemonic(network.config.accounts.mnemonic, `m/44'/60'/0'/0/0`).privateKey, provider);

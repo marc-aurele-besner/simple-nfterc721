@@ -49,45 +49,82 @@ describe('Simple NFT', function () {
 
   it('Does the contract return a baseURI ?', async function () {
     const baseURI = await contract.baseURI();
-    console.log('baseURI', baseURI);
 
     // const input = await contract.connect(user1).populateTransaction.setBaseURI('test base uri');
     // await Helper.checkRawTxnResult(input, user1);
     await contract.setBaseURI('test base uri');
 
     const baseURI_finale = await contract.baseURI();
-    console.log('baseURI_finale', baseURI_finale);
   });
 
   it('Does a user has a isApprovedForAll ?', async function () {
     const isApprovedForAll = await contract.isApprovedForAll(owner.address, user1.address);
-    console.log('isApprovedForAll', isApprovedForAll);
 
     await contract.setApprovalForAll(user1.address, true);
 
     const isApprovedForAll_final = await contract.isApprovedForAll(owner.address, user1.address);
-    console.log('isApprovedForAll_final', isApprovedForAll_final);
-    // Add test logic here
   });
 
-  it.only('Does a user has a getApproved ?', async function () {
+  it('Does a user has a getApproved ?', async function () {
     await contract.mint(1, {
       value: ethers.utils.parseEther('0.5')
     });
 
     const getApproved = await contract.getApproved(0);
-    console.log('getApproved', getApproved);
 
     await contract.approve(user1.address, 0);
 
     const approve = await contract.getApproved(0);
-    console.log('approve', approve);
-    // Add test logic here
   });
 
-  // it('Does contract owner can update contract uri? (should be)', async function () {
-  //   // Add test logic here
-  // });
+  it('Does tokenURI return a value on non-existent token', async function () {
+    await Helper.help_tokenURI(contract, owner, 0, Helper.errors.INVALID_TOKENURI);
+  });
+
+  it('Does tokenURI return a tokenURI after minting the 1st token', async function () {
+    await Helper.help_tokenURI(contract, owner, 0, Helper.errors.INVALID_TOKENURI);
+
+    await Helper.help_mint(contract, owner, 1, ethers.utils.parseEther('0.5'));
+
+    await Helper.help_tokenURI(contract, owner, 0);
+  });
+
+  it('Can we mint 0 token', async function () {
+    await Helper.help_mint(contract, owner, 0, ethers.utils.parseEther('0.5'), Helper.errors.QUANTITY_MUST_NOT_BE_ZERO);
+  });
+
+  it('Can we mint 1 token', async function () {
+    await Helper.help_mint(contract, owner, 1, ethers.utils.parseEther('0.5'));
+  });
+
+  it('Can we mint 2 token for the price of 1', async function () {
+    await Helper.help_mint(contract, owner, 2, ethers.utils.parseEther('0.5'), Helper.errors.TRANSACTION_VALUE_BELOW_MINT_PRICE);
+  });
+
+  it('Can we mint 2 token for the price of 2', async function () {
+    await Helper.help_mint(contract, owner, 2, ethers.utils.parseEther('1'));
+  });
+
+  it('Can we mint 2 token for the price of 2 (from user1) before mint started', async function () {
+    await Helper.help_mint(contract, user1, 2, ethers.utils.parseEther('1'), Helper.errors.CALLER_NOT_OWNER_OR_MINT_NOT_STARTED);
+  });
+
+  it('Can we mint 3 token', async function () {
+    await Helper.help_mint(contract, owner, 3, ethers.utils.parseEther('1.5'), Helper.errors.MAXIMUM_QTY_MINTED);
+  });
+
+  it('Can we mint 1 token from the whitelist', async function () {
+    const currentTimestamp = await Helper.returnCurrentTimestamp();
+    await Helper.help_startMinting(contract, owner, currentTimestamp + 100, currentTimestamp);
+
+    const proofs = await Helper.returnBuildProof(user1.address, [...Helper.WhiteList, user1.address, user2.address]);
+
+    const isWhitelistValid = await contract.connect(user1).isWhitelistValid(proofs);
+
+    await Helper.help_mintWhiteList(contract, user1, 1, proofs, ethers.utils.parseEther('0.5'));
+
+    expect(await contract.ownerOf(0)).to.equal(user1.address);
+  });
 
   // it('Does anyone can update contract uri? (should not)', async function () {
   //   // Add test logic here
