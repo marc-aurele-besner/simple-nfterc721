@@ -26,6 +26,10 @@ abstract contract Mintable is ERC721 {
     maxSupply = _maxSupply;
   }
 
+  function totalSupply() external view returns (uint256) {
+    return mintCount;
+  }
+
   /**
    * @dev Main mint - Internal function
    * @param to - Address to mint the token for
@@ -37,7 +41,7 @@ abstract contract Mintable is ERC721 {
     require(mintCount < maxSupply, 'Mintable: max supply reached');
     for (uint256 i = 0; i < quantity; i++) {
       super._mint(to, mintCount);
-      mintCount += quantity;
+      mintCount++;
     }
     emit Mint(to, quantity);
   }
