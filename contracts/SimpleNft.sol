@@ -32,16 +32,16 @@ contract SimpleNft is Controlable, WListable, Mintable {
     _;
   }
 
-  function mint(uint8 quantity) external ownerOrMintStarted {
-    (bool success, ) = payable(address(this)).call{ value: 0.5 ether }('');
-    require(success, 'SimpleNft: ETH transfer failed');
+  function mint(uint8 quantity) external payable ownerOrMintStarted {
+    require(quantity > 0, 'SimpleNft: quantity must be greater than 0');
+    require(msg.value >= 0.5 ether * quantity, 'SimpleNft: Transaction value below mint price');
     _mintPublic(_msgSender(), quantity);
   }
 
-  function mintWhiteList(uint8 quantity, bytes32[] calldata proofs) external witeListMintStarted {
+  function mintWhiteList(uint8 quantity, bytes32[] calldata proofs) external payable witeListMintStarted {
+    require(quantity > 0, 'SimpleNft: quantity must be greater than 0');
     require(_isWhitelistValid(proofs), 'SimpleNft: invalid proof');
-    (bool success, ) = payable(address(this)).call{ value: 0.5 ether }('');
-    require(success, 'SimpleNft: ETH transfer failed');
+    require(msg.value >= 0.5 ether * quantity, 'SimpleNft: Transaction value below mint price');
     _mintWhitelist(_msgSender(), quantity);
   }
 

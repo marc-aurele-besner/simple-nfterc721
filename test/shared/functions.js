@@ -89,6 +89,50 @@ const help_isWhitelistValid = async (contract, sender, allAddresses, isValid) =>
   expect(isWhitelistValid).to.be.equal(isValid);
 };
 
+const help_tokenURI = async (contract, sender, tokenId, error) => {
+  const input = await contract.connect(sender).populateTransaction.tokenURI(tokenId);
+  await checkRawTxnResult(input, sender, error);
+};
+
+const help_mint = async (contract, sender, quantity, value, error) => {
+  const totalSupply = await contract.totalSupply();
+
+  const input = await contract.connect(sender).populateTransaction.mint(quantity, {
+    value
+  });
+  await checkRawTxnResult(input, sender, error);
+  if (!error) {
+    const finalTotalSupply = await contract.totalSupply();
+    expect(ethers.BigNumber.from(totalSupply).add(quantity)).to.equal(ethers.BigNumber.from(finalTotalSupply));
+    if (quantity === 1) {
+      expect(await contract.ownerOf(totalSupply)).to.equal(sender.address);
+    } else if (quantity === 2) {
+      expect(await contract.ownerOf(totalSupply)).to.equal(sender.address);
+      expect(await contract.ownerOf(totalSupply + 1)).to.equal(sender.address);
+    }
+  }
+};
+
+const help_mintWhiteList = async (contract, sender, quantity, proofs, value, error) => {
+  const totalSupply = await contract.totalSupply();
+
+  const input = await contract.connect(sender).populateTransaction.mintWhiteList(quantity, proofs, {
+    value
+  });
+  await checkRawTxnResult(input, sender, error);
+
+  if (!error) {
+    const finalTotalSupply = await contract.totalSupply();
+    expect(ethers.BigNumber.from(totalSupply).add(quantity)).to.equal(ethers.BigNumber.from(finalTotalSupply));
+    if (quantity === 1) {
+      expect(await contract.ownerOf(totalSupply)).to.equal(sender.address);
+    } else if (quantity === 2) {
+      expect(await contract.ownerOf(totalSupply)).to.equal(sender.address);
+      expect(await contract.ownerOf(totalSupply + 1)).to.equal(sender.address);
+    }
+  }
+};
+
 module.exports = {
   buildRoot,
   returnBuildRoot,
@@ -99,5 +143,8 @@ module.exports = {
   getRandomInt,
   returnCurrentTimestamp,
   help_startMinting,
-  help_isWhitelistValid
+  help_isWhitelistValid,
+  help_tokenURI,
+  help_mint,
+  help_mintWhiteList
 };
