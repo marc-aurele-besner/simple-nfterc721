@@ -14,6 +14,12 @@ npm install
 npx hardhat test
 ```
 
+## List all Hardhat tasks
+
+```
+npx hardhat help
+```
+
 ## Run test with Foundry
 
 ```
