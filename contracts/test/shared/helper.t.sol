@@ -8,41 +8,36 @@ import { TestData } from './testData.t.sol';
 import { Functions } from './functions.t.sol';
 
 contract Helper is Functions, Cheats, TestData {
-    function initialize_helper(uint8 LOG_LEVEL_, TestType testType_) internal {
-        // Deploy contracts
-        (nftContract) = initialize_tests(
-            // Test Settings
-            LOG_LEVEL_,
-            testType_
-        );
-    }
+  function initialize_helper(uint8 LOG_LEVEL_) internal {
+    // Deploy contracts
+    (nftContract) = initialize_tests(
+      // Test Settings
+      LOG_LEVEL_
+    );
+  }
 
-    function initialize_helper(uint8 LOG_LEVEL_) internal {
-        initialize_helper(LOG_LEVEL_, TestType.Standard);
-    }
+  function help_changeLogLevel(uint8 newLogLevel_) internal {
+    _LOG_LEVEL = newLogLevel_;
+  }
 
-    function help_changeLogLevel(uint8 newLogLevel_) internal {
-        _LOG_LEVEL = newLogLevel_;
-    }
+  function help_changeDefaultMintValue(uint256 newDefaultMintValue_) internal {
+    DEFAULT_MINT_VALUE = newDefaultMintValue_;
+  }
 
-    function help_changeDefaultMintValue(uint256 newDefaultMintValue_) internal {
-        DEFAULT_MINT_VALUE = newDefaultMintValue_;
-    }
+  function help_changeDefaultBlocksCount(uint256 newDefaultBlocksCount_) internal {
+    DEFAULT_BLOCKS_COUNT = newDefaultBlocksCount_;
+  }
 
-    function help_changeDefaultBlocksCount(uint256 newDefaultBlocksCount_) internal {
-        DEFAULT_BLOCKS_COUNT = newDefaultBlocksCount_;
-    }
+  function help_moveBlockFoward(uint256 blockToRoll_) internal {
+    vm.roll(block.number + blockToRoll_);
+  }
 
-    function help_moveBlockFoward(uint256 blockToRoll_) internal {
-        vm.roll(block.number + blockToRoll_);
-    }
+  function help_moveTimeFoward(uint256 secondToWarp_) internal {
+    Cheats.skip(secondToWarp_);
+  }
 
-    function help_moveTimeFoward(uint256 secondToWarp_) internal {
-        Cheats.skip(secondToWarp_);
-    }
-
-    function help_moveBlockAndTimeFoward(uint256 blockToRoll_, uint256 secondToWarp_) internal {
-        help_moveBlockFoward(blockToRoll_);
-        help_moveTimeFoward(secondToWarp_);
-    }
+  function help_moveBlockAndTimeFoward(uint256 blockToRoll_, uint256 secondToWarp_) internal {
+    help_moveBlockFoward(blockToRoll_);
+    help_moveTimeFoward(secondToWarp_);
+  }
 }

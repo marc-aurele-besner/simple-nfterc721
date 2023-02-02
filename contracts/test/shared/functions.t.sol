@@ -17,7 +17,7 @@ contract Functions is Constants, Errors, TestStorage {
     Standard
   }
 
-  function initialize_tests(uint8 LOG_LEVEL_, TestType testType_) public returns (SimpleNft) {
+  function initialize_tests(uint8 LOG_LEVEL_) public returns (SimpleNft) {
     // Set general test settings
     _LOG_LEVEL = LOG_LEVEL_;
     vm.roll(1);
