@@ -21,7 +21,8 @@ contract Errors is DSTest {
     MintableMaxSupplyReached,
     MintableMaxMintReached,
     ControlablePublicMintingStartInPast,
-    ControlablePublicMintingStartBeforeWhitelistMinting
+    ControlablePublicMintingStartBeforeWhitelistMinting,
+    SimpleNftTransactionValueBelowMintPrice
   }
 
   // Associate your error with a revert message and add it to the mapping.
@@ -33,6 +34,7 @@ contract Errors is DSTest {
     _errors[RevertStatus.MintableMaxMintReached] = 'Mintable: max mint reached';
     _errors[RevertStatus.ControlablePublicMintingStartInPast] = "Controlable: Public minting can't start in the past";
     _errors[RevertStatus.ControlablePublicMintingStartBeforeWhitelistMinting] = "Controlable: Public minting can't start before whitelist minting";
+    _errors[RevertStatus.SimpleNftTransactionValueBelowMintPrice] = 'SimpleNft: Transaction value below mint price';
   }
 
   // Return the error message associated with the error.
