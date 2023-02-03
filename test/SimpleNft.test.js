@@ -126,9 +126,29 @@ describe('Simple NFT', function () {
     expect(await contract.ownerOf(0)).to.equal(user1.address);
   });
 
-  // it('Does anyone can update contract uri? (should not)', async function () {
-  //   // Add test logic here
-  // });
+  // test pour quelqu'un d'autre que le OWNER
+  it.only('Does anyone can update contract uri? (should not)', async function () {
+    const contractURI = await contract.contractURI();
+    console.log('contract URI', contractURI);
+
+    // on doit tester avec une autre personne que le owner
+    await contract.connect(user1).setContractURI('test');
+    // on rappelle la fonction contract URI pour voir si notre "test" a fonctionné
+    const _contractURI = await contract.contractURI();
+    console.log('contract URI', _contractURI);
+  });
+
+  // test pour le owner
+  it.only('Does owner can update contract uri? (should )', async function () {
+    const contractURI = await contract.contractURI();
+    console.log('contract URI', contractURI);
+
+    // on doit tester avec une autre personne que le owner
+    await contract.connect(owner).setContractURI('test');
+    // on rappelle la fonction contract URI pour voir si notre "test" a fonctionné
+    const _contractURI = await contract.contractURI();
+    console.log('contract URI', _contractURI);
+  });
 
   // it('Does contract owner can update base uri? (should be)', async function () {
   //   // Add test logic here
