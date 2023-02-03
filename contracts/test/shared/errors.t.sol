@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { Vm } from 'foundry-test-utility/contracts/utils/Vm.sol';
+import { Vm } from 'foundry-test-utility/contracts/utils/vm.sol';
 import { DSTest } from 'foundry-test-utility/contracts/utils/test.sol';
 
 contract Errors is DSTest {
