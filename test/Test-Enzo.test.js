@@ -135,39 +135,36 @@ describe('Simple NFT', function () {
   });
 
   it('Does contract owner can update base uri? (should be)', async function () {
-    const contractURI = await contract.contractURI();
-    console.log('contractURI', contractURI);
+    expect(await contract.baseURI().to.equal(''));
 
-    await contract.setContractURI('Test New ContractURI');
+    await contract.setBaseURI('Test New BaseURI');
 
-    const contractURI_final = await contract.contractURI();
-    console.log('contractURI_final', contractURI_final);
+    expect(await contract.baseURI().to.equal('Test New BaseURI'));
   });
 
   it('Does anyone can update contract uri? (should not)', async function () {
-    const contractURI = await contract.contractURI();
-    console.log('contractURI', contractURI);
+    expect(await contract.contractURI().to.equal(''));
 
-    await contract.connect(user1).setContractURI('Test New ContractURI');
+    await contract.connect(user2).setContractURI('Test New ContractURI');
 
-    const contractURI_final = await contract.contractURI();
-    console.log('contractURI_final', contractURI_final);
+    expect(await contract.contractURI().to.equal('Test New ContractURI'));
   });
 
   it('Does anyone can update base uri? (should not)', async function () {
-    const baseURI = await contract.baseURI();
-    console.log('baseURI', baseURI);
+    expect(await contract.baseURI().to.equal(''));
 
-    await contract.connect(user2).setBaseURI('TEST');
+    await contract.connect(user2).setBaseURI('Test New BaseURI');
 
-    const baseURI_final = await contract.baseURI();
-    console.log('baseURI', baseURI_final);
+    expect(await contract.baseURI().to.equal('Test New BaseURI'));
   });
 
+  it('Does contract owner can update contract uri? (should be)', async function () {
+    expect(await contract.contractURI().to.equal(''));
 
-  // it('Does anyone can update contract uri? (should not)', async function () {
-  //   // Add test logic here
-  // });
+    await contract.setContractURI('Test New ContractURI');
+
+    expect(await contract.contractURI().to.equal('Test New ContractURI'));
+  });
 
   // it('Does contract owner can update base uri? (should be)', async function () {
   //   // Add test logic here
