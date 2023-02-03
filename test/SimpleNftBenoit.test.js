@@ -120,25 +120,25 @@ describe('Simple NFT', function () {
     const proofs = await Helper.returnBuildProof(user1.address, [...Helper.WhiteList, user1.address, user2.address]);
 
     const isWhitelistValid = await contract.connect(user1).isWhitelistValid(proofs);
+
     await Helper.help_mintWhiteList(contract, user1, 1, proofs, ethers.utils.parseEther('0.5'));
-    const ownerAddress = await contract.ownerOf(0);
-    expect(ownerAddress).to.equal(user1.address);
+
+    expect(await contract.ownerOf(0)).to.equal(user1.address);
   });
 
   // test pour quelqu'un d'autre que le OWNER
-  it.only('Does anyone can update contract uri? (should not)', async function () {
+  it('Does anyone can update contract uri? (should not)', async function () {
     const contractURI = await contract.contractURI();
     console.log('contract URI', contractURI);
-
     // on doit tester avec une autre personne que le owner
     await contract.connect(user1).setContractURI('test');
     // on rappelle la fonction contract URI pour voir si notre "test" a fonctionné
     const _contractURI = await contract.contractURI();
-    console.log('contract URI', _contractURI);
+    expect(await _contractURI).to.equal('test');
   });
 
   // test pour le owner
-  it.only('Does owner can update contract uri? (should )', async function () {
+  it('Does owner can update contract uri? (should )', async function () {
     const contractURI = await contract.contractURI();
     console.log('contract URI', contractURI);
 
@@ -146,7 +146,7 @@ describe('Simple NFT', function () {
     await contract.connect(owner).setContractURI('test');
     // on rappelle la fonction contract URI pour voir si notre "test" a fonctionné
     const _contractURI = await contract.contractURI();
-    console.log('contract URI', _contractURI);
+    expect(await _contractURI).to.equal('test');
   });
 
   // it('Does contract owner can update base uri? (should be)', async function () {
