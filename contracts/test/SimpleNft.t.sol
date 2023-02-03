@@ -57,4 +57,19 @@ contract SimpleNft_test is Helper {
     verify_revertCall(Errors.RevertStatus.SimpleNftTransactionValueBelowMintPrice);
     nftContract.mint{ value: 0.5 ether }(2);
   }
+
+  function test_SimpleNft_mintWhitelist_2Tokens() public {
+    // help_mintWhiteList(address(user11), uint8(2), _ADDRESS11_WL_PROOFS, uint256(1 ether), Errors.RevertStatus.Success);
+
+    uint256 totalSupply = nftContract.totalSupply();
+    help_startMinting();
+    vm.prank(user11);
+    vm.deal(user11, 1 ether);
+    nftContract.mintWhiteList{ value: 1 ether }(2, _ADDRESS11_WL_PROOFS);
+
+    uint256 finalTotalSupply = nftContract.totalSupply();
+    assertEq(finalTotalSupply, totalSupply + 2);
+    assertEq(nftContract.ownerOf(totalSupply), user11);
+    assertEq(nftContract.ownerOf(totalSupply + 1), user11);
+  }
 }

@@ -7,10 +7,11 @@ import { CheatCodes } from 'foundry-test-utility/contracts/utils/cheatcodes.sol'
 import { Constants } from './constants.t.sol';
 import { Errors } from './errors.t.sol';
 import { TestStorage } from './testStorage.t.sol';
+import { TestData } from './TestData.t.sol';
 
 import { SimpleNft } from '../../SimpleNft.sol';
 
-contract Functions is Constants, Errors, TestStorage {
+contract Functions is Constants, Errors, TestStorage, TestData {
   SimpleNft public nftContract;
 
   enum TestType {
@@ -25,6 +26,8 @@ contract Functions is Constants, Errors, TestStorage {
     vm.startPrank(ADMIN);
 
     nftContract = new SimpleNft(NAME_ERC721, SYMBOL_ERC721, MAX_SUPPLY_ERC721);
+
+    nftContract.updateWhitelistRoot(_ROOT_WHITELIST);
 
     vm.stopPrank();
     vm.roll(block.number + 1);
@@ -70,5 +73,25 @@ contract Functions is Constants, Errors, TestStorage {
 
   function help_startMinting() internal {
     help_startMinting(ADMIN, block.timestamp + 1000, block.timestamp);
+  }
+
+  function help_mintWhiteList(address sender, uint8 quantity, bytes32[] calldata proofs, uint256 value, Errors.RevertStatus revertType_) internal {
+    uint256 totalSupply = nftContract.totalSupply();
+    help_startMinting();
+    vm.prank(sender);
+    vm.deal(sender, value);
+    verify_revertCall(revertType_);
+    nftContract.mintWhiteList{ value: value }(quantity, proofs);
+
+    uint256 finalTotalSupply = nftContract.totalSupply();
+    if (revertType_ == Errors.RevertStatus.Success) {
+      assertEq(finalTotalSupply, totalSupply + quantity);
+      assertEq(nftContract.ownerOf(totalSupply), sender);
+      assertEq(nftContract.ownerOf(totalSupply + 1), sender);
+    }
+  }
+
+  function help_mintWhiteList(address sender, uint8 quantity, bytes32[] calldata proofs, uint256 value) internal {
+    help_mintWhiteList(sender, quantity, proofs, value, Errors.RevertStatus.Success);
   }
 }

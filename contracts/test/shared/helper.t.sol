@@ -3,11 +3,10 @@ pragma solidity ^0.8.0;
 
 import 'foundry-test-utility/contracts/utils/console.sol';
 import { stdCheats as Cheats } from 'foundry-test-utility/contracts/utils/stdlib.sol';
-import { TestData } from './testData.t.sol';
 
 import { Functions } from './functions.t.sol';
 
-contract Helper is Functions, Cheats, TestData {
+contract Helper is Functions, Cheats {
   function initialize_helper(uint8 LOG_LEVEL_) internal {
     // Deploy contracts
     (nftContract) = initialize_tests(
