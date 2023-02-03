@@ -126,7 +126,7 @@ describe('Simple NFT', function () {
     expect(await contract.ownerOf(0)).to.equal(user1.address);
   });
 
-  it.only('Does anyone can update contract uri? (should not)', async function () {
+  it('Does anyone can update contract uri? (should not)', async function () {
     const contractURI = await contract.contractURI();
 
     await contract.connect(user1).setContractURI('Test New ContractURI');
