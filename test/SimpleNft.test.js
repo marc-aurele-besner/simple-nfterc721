@@ -120,10 +120,9 @@ describe('Simple NFT', function () {
     const proofs = await Helper.returnBuildProof(user1.address, [...Helper.WhiteList, user1.address, user2.address]);
 
     const isWhitelistValid = await contract.connect(user1).isWhitelistValid(proofs);
-
     await Helper.help_mintWhiteList(contract, user1, 1, proofs, ethers.utils.parseEther('0.5'));
-
-    expect(await contract.ownerOf(0)).to.equal(user1.address);
+    const ownerAddress = await contract.ownerOf(0);
+    expect(ownerAddress).to.equal(user1.address);
   });
 
   // it('Does anyone can update contract uri? (should not)', async function () {
