@@ -58,13 +58,6 @@ contract SimpleNft_test is Helper {
     nftContract.mint{ value: 0.5 ether }(2);
   }
 
-  function test_SimpleNft_basic_baseUri() public {
-    assertEq(nftContract.baseURI(), '');
-    vm.prank(ADMIN);
-    nftContract.setBaseURI('test baseURI');
-    assertEq(nftContract.baseURI(), 'test baseURI');
-  }
-
   function test_SimpleNft_basic_contractUri() public {
     assertEq(nftContract.contractURI(), '');
     vm.prank(ADMIN);
@@ -75,6 +68,7 @@ contract SimpleNft_test is Helper {
   function test_SimpleNft_any_contractUri() public {
     assertEq(nftContract.contractURI(), '');
     vm.prank(address(2));
+    vm.expectRevert('Caller is not the owner');
     nftContract.setContractURI('test contractURI');
     assertEq(nftContract.contractURI(), 'test contractURI');
   }

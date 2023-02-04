@@ -135,56 +135,69 @@ describe('Simple NFT', function () {
   });
 
   it('Does contract owner can update base uri? (should be)', async function () {
-    expect(await contract.baseURI().to.equal(''));
+    expect(await contract.baseURI()).to.equal('');
 
     await contract.setBaseURI('Test New BaseURI');
 
-    expect(await contract.baseURI().to.equal('Test New BaseURI'));
+    expect(await contract.baseURI()).to.equal('Test New BaseURI');
   });
 
   it('Does anyone can update contract uri? (should not)', async function () {
-    expect(await contract.contractURI().to.equal(''));
+    expect(await contract.contractURI()).to.equal('');
 
     await contract.connect(user2).setContractURI('Test New ContractURI');
 
-    expect(await contract.contractURI().to.equal('Test New ContractURI'));
+    expect(await contract.contractURI()).to.equal('Test New ContractURI');
   });
 
   it('Does anyone can update base uri? (should not)', async function () {
-    expect(await contract.baseURI().to.equal(''));
+    expect(await contract.baseURI()).to.equal('');
 
     await contract.connect(user2).setBaseURI('Test New BaseURI');
 
-    expect(await contract.baseURI().to.equal('Test New BaseURI'));
+    expect(await contract.baseURI()).to.equal('Test New BaseURI');
   });
 
   it('Does contract owner can update contract uri? (should be)', async function () {
-    expect(await contract.contractURI().to.equal(''));
+    expect(await contract.contractURI()).to.equal('');
 
     await contract.setContractURI('Test New ContractURI');
 
-    expect(await contract.contractURI().to.equal('Test New ContractURI'));
+    expect(await contract.contractURI()).to.equal('Test New ContractURI');
   });
 
-  // it('Does contract owner can update base uri? (should be)', async function () {
-  //   // Add test logic here
-  // });
+  it('Does contract owner can update contract uri and base uri? (should be)', async function () {
+    expect(await contract.contractURI()).to.equal('');
+    expect(await contract.baseURI()).to.equal('');
 
-  // it('Does anyone can update base uri? (should not)', async function () {
-  //   // Add test logic here
-  // });
+    await contract.setContractURI('Test');
+    await contract.setBaseURI('Test');
 
-  // it('Does contract owner can update contract uri and base uri? (should be)', async function () {
-  //   // Add test logic here
-  // });
+    expect(await contract.contractURI()).to.equal('Test');
+    expect(await contract.baseURI()).to.equal('Test');
+  });
 
-  // it('Does anyone can update contract uri and base uri? (should not)', async function () {
-  //   // Add test logic here
-  // });
+  it('Does anyone can update contract uri and base uri? (should not)', async function () {
+    expect(await contract.contractURI()).to.equal('');
+    expect(await contract.baseURI()).to.equal('');
 
-  // it('Does contract owner can withdraw ether from contract? (should be)', async function () {
-  //   // Add test logic here
-  // });
+    await contract.connect(user2).setContractURI('Test');
+    await contract.connect(user2).setBaseURI('Test');
+
+    expect(await contract.contractURI()).to.equal('Test');
+    expect(await contract.baseURI()).to.equal('Test');
+  });
+
+  it('Does contract owner can withdraw ether from contract? (should be)', async function () {
+    await Helper.help_mint(contract, owner, 1, ethers.utils.parseEther('0.5'));
+
+    expect(await contract.totalSupply()).to.equal('1');
+
+    await contract.withdrawEther();
+
+    //Je ne sais pas quoi mettre dans le equal pour prouver que withdrawEther() a return un bool success
+    //expect(await contract.withdrawEther()).to.equal();
+  });
 
   // it('Does contract owner can withdraw ether from contract, after 1 first regular mint? (should be)', async function () {
   //   // Add test logic here
