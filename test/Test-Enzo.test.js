@@ -126,14 +126,6 @@ describe('Simple NFT', function () {
     expect(await contract.ownerOf(0)).to.equal(user1.address);
   });
 
-  it('Does contract transferOwnership works ? (should be)', async function () {
-    const transferOwnership = await contract.transferOwnership(user2.address);
-
-    console.log('transferOwnership', transferOwnership);
-    const owner_final = await contract.owner();
-    console.log('owner is ', owner_final);
-  });
-
   it('Does contract owner can update base uri? (should be)', async function () {
     expect(await contract.baseURI()).to.equal('');
 
@@ -189,21 +181,33 @@ describe('Simple NFT', function () {
   });
 
   it('Does contract owner can withdraw ether from contract? (should be)', async function () {
+    let balance = await provider.getBalance(owner.address);
+    console.log('balance : ', balance);
+
     await Helper.help_mint(contract, owner, 1, ethers.utils.parseEther('0.5'));
 
     expect(await contract.totalSupply()).to.equal('1');
 
+    let balance_mid = await provider.getBalance(owner.address);
+    console.log('balance : ', balance_mid);
+
     await contract.withdrawEther();
 
-    //Je ne sais pas quoi mettre dans le equal pour prouver que withdrawEther() a return un bool success
-    //expect(await contract.withdrawEther()).to.equal();
+    let balance_final = await provider.getBalance(owner.address);
+    console.log('balance : ', balance_final);
   });
 
-  // it('Does contract owner can withdraw ether from contract, after 1 first regular mint? (should be)', async function () {
-  //   // Add test logic here
-  // });
+  it('Does anyone can withdraw ether from contract? (should not)', async function () {
+    await Helper.help_mint(contract, owner, 1, ethers.utils.parseEther('0.5'));
 
-  // it('Does anyone can withdraw ether from contract? (should not)', async function () {
-  //   // Add test logic here
-  // });
+    expect(await contract.totalSupply()).to.equal('1');
+
+    let balance = await provider.getBalance(user2.address);
+    expect(ethers.utils.formatEther(await balance.toString())).to.equal('10000.0');
+
+    await contract.connect(user2).withdrawEther();
+
+    let balance_final = await provider.getBalance(user2.address);
+    expect(ethers.utils.formatEther(await balance_final.toString())).to.equal(balance);
+  });
 });
