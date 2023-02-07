@@ -67,7 +67,7 @@ describe('SimpleNft', function () {
   });
 });
 
-// test Controlable.sol:
+// test Controlable.sol avec URI:
 
 describe('SimpleNft', function () {
   it('Does the function contractURI return the string _contractURI?', async function () {
@@ -76,9 +76,38 @@ describe('SimpleNft', function () {
     const hardhatNFT = await NFT.deploy('SimpleNft', 'SNFT', 1000);
 
     const contractURI = await hardhatNFT.contractURI();
-    await expect(hardhatNFT._contractURI); // pas sur de cette ligne
+    await expect(hardhatNFT._contractURI); // pas sûr de cette ligne
   });
 });
 
-//tester si tokenid existe
-//tester si fonction tokenURI retourne bien une string avec adresse de type IPFS
+//tester si fonction tokenURI retourne bien une string avec adresse tokenURI
+//setContractURI x 2
+//setBaseURI x2
+//_extensionURI
+
+describe('SimpleNft', function () {
+  async function deployNFTFixture() {
+    const NFT = await ethers.getContractFactory('SimpleNft');
+    const [owner, addr1, addr2] = await ethers.getSigners();
+
+    const hardhatNFT = await NFT.deploy('SimpleNft', 'SNFT', 1000);
+
+    await hardhatNFT.deployed();
+
+    return { NFT, hardhatNFT, owner, addr1, addr2 };
+  }
+
+  it('Does the function baseURI return the string _baseURI?', async function () {
+    const { hardhatNFT } = await loadFixture(deployNFTFixture);
+
+    const baseURI = await hardhatNFT.baseURI();
+    await expect(hardhatNFT._baseURI); // pas sûr de la pertinence de ce test
+  });
+  //test si tokenId existe
+  it.only('Does the function tokenURI return a string of a non-existant tokenId?', async function () {
+    const { hardhatNFT } = await loadFixture(deployNFTFixture);
+
+    const tokenURI = await hardhatNFT.tokenURI(3);
+    await expect(hardhatNFT.tokenURI); //comment dire que l'on s'attend à une erreur?
+  });
+});
