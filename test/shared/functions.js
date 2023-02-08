@@ -133,22 +133,18 @@ const help_mintWhiteList = async (contract, sender, quantity, proofs, value, err
   }
 };
 
-const help_withdrawEther = async (contract, sender, error) => {
+const help_withdrawEther = async (contract, sender, expectedEtherToWithdraw, error) => {
   const senderBalanceStart = await ethers.provider.getBalance(sender.address);
-  console.log('senderBalanceStart', ethers.utils.formatEther(senderBalanceStart));
 
   const input = await contract.connect(sender).populateTransaction.withdrawEther();
   await checkRawTxnResult(input, sender, error);
 
   if (!error) {
     const senderBalanceAfter = await ethers.provider.getBalance(sender.address);
-    console.log('ownerBalanceAfter', ethers.utils.formatEther(senderBalanceAfter));
     const contractBalanceAfter = await ethers.provider.getBalance(contract.address);
-    const txGasCost = senderBalanceAfter.sub(senderBalanceStart).sub(ethers.utils.parseEther('0.5'));
+    const txGasCost = senderBalanceAfter.sub(senderBalanceStart).sub(expectedEtherToWithdraw);
     expect(contractBalanceAfter).to.equal(0);
-    expect(ethers.utils.formatEther(senderBalanceStart)).to.equal(
-      ethers.utils.formatEther(senderBalanceAfter.add(ethers.utils.parseEther('0.5')).add(txGasCost))
-    );
+    expect(ethers.utils.formatEther(senderBalanceAfter)).to.equal(ethers.utils.formatEther(senderBalanceStart.add(expectedEtherToWithdraw).add(txGasCost)));
   }
 };
 

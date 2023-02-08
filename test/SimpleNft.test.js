@@ -134,16 +134,16 @@ describe('Simple NFT', function () {
 
   it('Can we withdraw the ethereum after 1 mint', async function () {
     await Helper.help_mint(contract, owner, 1, ethers.utils.parseEther('0.5'));
-    await Helper.help_withdrawEther(contract, owner);
+    await Helper.help_withdrawEther(contract, owner, ethers.utils.parseEther('0.5'));
   });
 
   it('Can anyone withdraw the ethereum after 1 mint', async function () {
     await Helper.help_mint(contract, owner, 1, ethers.utils.parseEther('0.5'));
-    await Helper.help_withdrawEther(contract, user1, Helper.errors.CALLER_NOT_OWNER);
+    await Helper.help_withdrawEther(contract, user1, ethers.utils.parseEther('0.5'), Helper.errors.CALLER_NOT_OWNER);
   });
 
-  it.only('Can anyone withdraw the ethereum after 2 mint', async function () {
+  it('Can we withdraw the ethereum after 2 mint', async function () {
     await Helper.help_mint(contract, owner, 2, ethers.utils.parseEther('1'));
-    await Helper.help_withdrawEther(contract, owner);
+    await Helper.help_withdrawEther(contract, owner, ethers.utils.parseEther('1'));
   });
 });
