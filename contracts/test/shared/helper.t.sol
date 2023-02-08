@@ -9,7 +9,7 @@ import { Functions } from './functions.t.sol';
 contract Helper is Functions, Cheats {
   function initialize_helper(uint8 LOG_LEVEL_) internal {
     // Deploy contracts
-    (nftContract) = initialize_tests(
+    nftContract = initialize_tests(
       // Test Settings
       LOG_LEVEL_
     );

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
+import 'foundry-test-utility/contracts/utils/console.sol';
 import { Helper } from './shared/helper.t.sol';
 import { Errors } from './shared/errors.t.sol';
 
@@ -71,5 +72,26 @@ contract SimpleNft_test is Helper {
     assertEq(finalTotalSupply, totalSupply + 2);
     assertEq(nftContract.ownerOf(totalSupply), user11);
     assertEq(nftContract.ownerOf(totalSupply + 1), user11);
+  }
+
+  function test_SimpleNft_withdrawEther() public {
+    vm.startPrank(ADMIN);
+    vm.deal(ADMIN, 0.5 ether);
+    nftContract.mint{ value: 0.5 ether }(1);
+
+    assertEq(nftContract.ownerOf(0), ADMIN);
+
+    uint256 senderBalanceBefore = ADMIN.balance;
+
+    uint256 nftContractBalanceBefore = address(nftContract).balance;
+
+    nftContract.withdrawEther();
+    vm.stopPrank();
+
+    uint256 senderBalanceAfter = ADMIN.balance;
+    uint256 nftContractBalanceAfter = address(nftContract).balance;
+
+    assertTrue(nftContractBalanceAfter == 0);
+    assertEq(senderBalanceAfter, senderBalanceBefore + nftContractBalanceBefore);
   }
 }
