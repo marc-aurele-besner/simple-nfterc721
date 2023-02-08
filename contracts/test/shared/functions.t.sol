@@ -7,7 +7,7 @@ import { CheatCodes } from 'foundry-test-utility/contracts/utils/cheatcodes.sol'
 import { Constants } from './constants.t.sol';
 import { Errors } from './errors.t.sol';
 import { TestStorage } from './testStorage.t.sol';
-import { TestData } from './TestData.t.sol';
+import { TestData } from './testData.t.sol';
 
 import { SimpleNft } from '../../SimpleNft.sol';
 

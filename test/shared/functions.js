@@ -133,6 +133,21 @@ const help_mintWhiteList = async (contract, sender, quantity, proofs, value, err
   }
 };
 
+const help_withdrawEther = async (contract, sender, expectedEtherToWithdraw, error) => {
+  const senderBalanceStart = await ethers.provider.getBalance(sender.address);
+
+  const input = await contract.connect(sender).populateTransaction.withdrawEther();
+  await checkRawTxnResult(input, sender, error);
+
+  if (!error) {
+    const senderBalanceAfter = await ethers.provider.getBalance(sender.address);
+    const contractBalanceAfter = await ethers.provider.getBalance(contract.address);
+    const txGasCost = senderBalanceAfter.sub(senderBalanceStart).sub(expectedEtherToWithdraw);
+    expect(contractBalanceAfter).to.equal(0);
+    expect(ethers.utils.formatEther(senderBalanceAfter)).to.equal(ethers.utils.formatEther(senderBalanceStart.add(expectedEtherToWithdraw).add(txGasCost)));
+  }
+};
+
 module.exports = {
   buildRoot,
   returnBuildRoot,
@@ -146,5 +161,6 @@ module.exports = {
   help_isWhitelistValid,
   help_tokenURI,
   help_mint,
-  help_mintWhiteList
+  help_mintWhiteList,
+  help_withdrawEther
 };

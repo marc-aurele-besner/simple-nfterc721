@@ -125,35 +125,25 @@ describe('Simple NFT', function () {
     expect(ownerAddress).to.equal(user1.address);
   });
 
-  // it('Does anyone can update contract uri? (should not)', async function () {
-  //   // Add test logic here
-  // });
+  it('Does the contract has ethereum after 1 mint', async function () {
+    const contractBalanceOriginal = await ethers.provider.getBalance(contract.address);
+    await Helper.help_mint(contract, owner, 1, ethers.utils.parseEther('0.5'));
+    const contractBalanceFinal = await ethers.provider.getBalance(contract.address);
+    expect(contractBalanceFinal).to.equal(contractBalanceOriginal.add(ethers.utils.parseEther('0.5')));
+  });
 
-  // it('Does contract owner can update base uri? (should be)', async function () {
-  //   // Add test logic here
-  // });
+  it('Can we withdraw the ethereum after 1 mint', async function () {
+    await Helper.help_mint(contract, owner, 1, ethers.utils.parseEther('0.5'));
+    await Helper.help_withdrawEther(contract, owner, ethers.utils.parseEther('0.5'));
+  });
 
-  // it('Does anyone can update base uri? (should not)', async function () {
-  //   // Add test logic here
-  // });
+  it('Can anyone withdraw the ethereum after 1 mint', async function () {
+    await Helper.help_mint(contract, owner, 1, ethers.utils.parseEther('0.5'));
+    await Helper.help_withdrawEther(contract, user1, ethers.utils.parseEther('0.5'), Helper.errors.CALLER_NOT_OWNER);
+  });
 
-  // it('Does contract owner can update contract uri and base uri? (should be)', async function () {
-  //   // Add test logic here
-  // });
-
-  // it('Does anyone can update contract uri and base uri? (should not)', async function () {
-  //   // Add test logic here
-  // });
-
-  // it('Does contract owner can withdraw ether from contract? (should be)', async function () {
-  //   // Add test logic here
-  // });
-
-  // it('Does contract owner can withdraw ether from contract, after 1 first regular mint? (should be)', async function () {
-  //   // Add test logic here
-  // });
-
-  // it('Does anyone can withdraw ether from contract? (should not)', async function () {
-  //   // Add test logic here
-  // });
+  it('Can we withdraw the ethereum after 2 mint', async function () {
+    await Helper.help_mint(contract, owner, 2, ethers.utils.parseEther('1'));
+    await Helper.help_withdrawEther(contract, owner, ethers.utils.parseEther('1'));
+  });
 });
