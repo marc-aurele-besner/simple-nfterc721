@@ -94,4 +94,23 @@ contract Functions is Constants, Errors, TestStorage, TestData {
   function help_mintWhiteList(address sender, uint8 quantity, bytes32[] calldata proofs, uint256 value) internal {
     help_mintWhiteList(sender, quantity, proofs, value, Errors.RevertStatus.Success);
   }
+
+  function help_withdrawEther(address sender, Errors.RevertStatus revertType_) internal {
+    uint256 senderBalanceBefore = sender.balance;
+    uint256 nftContractBalanceBefore = address(nftContract).balance;
+
+    vm.prank(sender);
+    verify_revertCall(revertType_);
+    nftContract.withdrawEther();
+
+    uint256 senderBalanceAfter = sender.balance;
+    uint256 nftContractBalanceAfter = address(nftContract).balance;
+
+    assertTrue(nftContractBalanceAfter == 0);
+    assertEq(senderBalanceAfter, senderBalanceBefore + nftContractBalanceBefore);
+  }
+
+  function help_withdrawEther(address sender) internal {
+    help_withdrawEther(sender, Errors.RevertStatus.Success);
+  }
 }
