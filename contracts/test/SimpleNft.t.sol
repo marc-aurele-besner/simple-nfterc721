@@ -75,23 +75,42 @@ contract SimpleNft_test is Helper {
   }
 
   function test_SimpleNft_withdrawEther() public {
-    vm.startPrank(ADMIN);
+    vm.prank(ADMIN);
     vm.deal(ADMIN, 0.5 ether);
     nftContract.mint{ value: 0.5 ether }(1);
 
     assertEq(nftContract.ownerOf(0), ADMIN);
 
-    uint256 senderBalanceBefore = ADMIN.balance;
+    help_withdrawEther(ADMIN);
+  }
 
-    uint256 nftContractBalanceBefore = address(nftContract).balance;
+  function test_SimpleNft_withdrawEther_after_2whitelistMint() public {
+    uint256 totalSupply = nftContract.totalSupply();
+    help_startMinting();
+    vm.prank(user11);
+    vm.deal(user11, 1 ether);
+    nftContract.mintWhiteList{ value: 1 ether }(2, _ADDRESS11_WL_PROOFS);
 
-    nftContract.withdrawEther();
-    vm.stopPrank();
+    uint256 finalTotalSupply = nftContract.totalSupply();
+    assertEq(finalTotalSupply, totalSupply + 2);
+    assertEq(nftContract.ownerOf(totalSupply), user11);
+    assertEq(nftContract.ownerOf(totalSupply + 1), user11);
 
-    uint256 senderBalanceAfter = ADMIN.balance;
-    uint256 nftContractBalanceAfter = address(nftContract).balance;
+    help_withdrawEther(ADMIN);
+  }
 
-    assertTrue(nftContractBalanceAfter == 0);
-    assertEq(senderBalanceAfter, senderBalanceBefore + nftContractBalanceBefore);
+  function test_SimpleNft_withdrawEther_by_anyone() public {
+    uint256 totalSupply = nftContract.totalSupply();
+    help_startMinting();
+    vm.prank(user11);
+    vm.deal(user11, 1 ether);
+    nftContract.mintWhiteList{ value: 1 ether }(2, _ADDRESS11_WL_PROOFS);
+
+    uint256 finalTotalSupply = nftContract.totalSupply();
+    assertEq(finalTotalSupply, totalSupply + 2);
+    assertEq(nftContract.ownerOf(totalSupply), user11);
+    assertEq(nftContract.ownerOf(totalSupply + 1), user11);
+
+    help_withdrawEther(user11, RevertStatus.OwnableCallerNotOwner);
   }
 }

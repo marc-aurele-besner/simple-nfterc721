@@ -10,6 +10,8 @@ async function main() {
   const SimpleNft = await hre.ethers.getContractFactory('SimpleNft');
   const simpleNft = await SimpleNft.deploy('SimpleNft', 'SNFT', 1000);
 
+  console.log('txHash: ', simpleNft.deployTransaction.hash);
+
   const contractInstance = await simpleNft.deployed();
 
   const contractName = await contractInstance.name();
