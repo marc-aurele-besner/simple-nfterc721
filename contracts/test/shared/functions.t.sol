@@ -106,8 +106,10 @@ contract Functions is Constants, Errors, TestStorage, TestData {
     uint256 senderBalanceAfter = sender.balance;
     uint256 nftContractBalanceAfter = address(nftContract).balance;
 
-    assertTrue(nftContractBalanceAfter == 0);
-    assertEq(senderBalanceAfter, senderBalanceBefore + nftContractBalanceBefore);
+    if (revertType_ == Errors.RevertStatus.Success) {
+      assertTrue(nftContractBalanceAfter == 0);
+      assertEq(senderBalanceAfter, senderBalanceBefore + nftContractBalanceBefore);
+    }
   }
 
   function help_withdrawEther(address sender) internal {
