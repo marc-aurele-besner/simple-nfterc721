@@ -7,19 +7,22 @@
 const hre = require('hardhat');
 
 async function main() {
+  const [deployer] = await hre.ethers.getSigners();
   const SimpleNft = await hre.ethers.getContractFactory('SimpleNft');
-  const simpleNft = await SimpleNft.deploy('SimpleNft', 'SNFT', 1000, { gasPrice: 20000000000 });
 
-  console.log('txHash: ', simpleNft.deployTransaction.hash);
-
-  const contractInstance = await simpleNft.deployed();
+  const contractInstance = new hre.ethers.Contract('0x10C3e6FbdFBb43459B13B6957f77097EE5aC7931', SimpleNft.interface, deployer);
 
   const contractName = await contractInstance.name();
   const contractSymbol = await contractInstance.symbol();
 
   console.log(`Contract SimpleNft deployed to ${contractInstance.address}`);
   console.log(`Contract SimpleNft has Symbol: ${contractName} and Name: ${contractSymbol}`);
-  // console.log('Receipt: ', contractInstance.deployTransaction);
+
+  const mintTx = await contractInstance.mint(1, { value: hre.ethers.utils.parseEther('0.05') });
+
+  console.log('txHash: ', mintTx.hash);
+
+  await mintTx.wait();
 }
 
 // We recommend this pattern to be able to use async/await everywhere
