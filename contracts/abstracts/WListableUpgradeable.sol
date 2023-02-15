@@ -11,11 +11,15 @@ pragma solidity ^0.8.9;
 // WL: 2 per address
 // Public: 2 per address (WL can min public also)
 
-import '@openzeppelin/contracts/utils/Context.sol';
-import '@openzeppelin/contracts/utils/cryptography/MerkleProof.sol';
+import '@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol';
+import '@openzeppelin/contracts-upgradeable/utils/cryptography/MerkleProofUpgradeable.sol';
 
-abstract contract WListableUpgradeable is Context {
+abstract contract WListableUpgradeable is ContextUpgradeable {
   bytes32 private root;
+
+
+  function __WListableUpgradeable_init() internal onlyInitializing {
+  }
 
   /**
    * @dev Verify proofs against root for caller
@@ -32,7 +36,7 @@ abstract contract WListableUpgradeable is Context {
    * @return bool - True if proofs are valid
    */
   function _isWhitelistValid(bytes32[] calldata proofs) internal view virtual returns (bool) {
-    return MerkleProof.verifyCalldata(proofs, root, keccak256(abi.encodePacked(msg.sender)));
+    return MerkleProofUpgradeable.verifyCalldata(proofs, root, keccak256(abi.encodePacked(msg.sender)));
   }
 
   /**
@@ -42,4 +46,6 @@ abstract contract WListableUpgradeable is Context {
   function _updateWhitelistRoot(bytes32 _root) internal virtual {
     root = _root;
   }
+  
+  uint256[50] private __gap;
 }

@@ -11,16 +11,21 @@ pragma solidity ^0.8.9;
 // WL: 2 per address
 // Public: 2 per address (WL can min public also)
 
-import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
+import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
+import '@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol';
 
 import 'hardhat/console.sol';
 
-abstract contract ControlableUpgradeable is Ownable {
+abstract contract ControlableUpgradeable is OwnableUpgradeable {
   uint256 private _startTimestamp;
   uint256 private _startWhitelistTimestamp;
   string private _contractURI;
   string private _baseURI;
+
+
+  function __ControlableUpgradeable_init() internal onlyInitializing {
+    __Ownable_init();
+  }
 
   /**
    * @dev Return contractURI
@@ -121,9 +126,11 @@ abstract contract ControlableUpgradeable is Ownable {
    *  - Verify that the caller is the owner
    */
   function withdrawERC20Token(address tokenAddres) external virtual onlyOwner returns (bool success) {
-    IERC20 token = IERC20(tokenAddres);
+    IERC20Upgradeable token = IERC20Upgradeable(tokenAddres);
     uint256 balance = token.balanceOf(address(this));
     require(token.transfer(msg.sender, balance), 'Controlable: Transfer failed');
     return true;
   }
+  
+  uint256[50] private __gap;
 }

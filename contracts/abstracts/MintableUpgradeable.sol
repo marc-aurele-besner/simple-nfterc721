@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import '@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol';
 
 // TotalSupply: 1000
 // Name: SimpleNft
@@ -13,7 +13,7 @@ import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
 // WL: 2 per address
 // Public: 2 per address (WL can min public also)
 
-abstract contract MintableUpgradeable is ERC721 {
+abstract contract MintableUpgradeable is ERC721Upgradeable {
   uint256 private maxSupply = 0;
   uint256 private mintCount = 0;
 
@@ -22,7 +22,8 @@ abstract contract MintableUpgradeable is ERC721 {
 
   event Mint(address indexed to, uint256 indexed quantity);
 
-  constructor(string memory name_, string memory symbol_, uint256 _maxSupply) ERC721(name_, symbol_) {
+  function __MintableUpgradeable_init(string memory name_, string memory symbol_, uint256 _maxSupply) internal onlyInitializing {
+    __ERC721_init(name_, symbol_);
     maxSupply = _maxSupply;
   }
 
@@ -67,4 +68,6 @@ abstract contract MintableUpgradeable is ERC721 {
     _WLminted[to] += quantity;
     _mint(to, quantity);
   }
+  
+  uint256[50] private __gap;
 }

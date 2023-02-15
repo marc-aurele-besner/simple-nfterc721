@@ -13,14 +13,18 @@ import '@openzeppelin/contracts/utils/Strings.sol';
 // WL: 2 per address
 // Public: 2 per address (WL can min public also)
 
-import './abstracts/Controlable.sol';
-import './abstracts/Mintable.sol';
-import './abstracts/WListable.sol';
+import './abstracts/ControlableUpgradeable.sol';
+import './abstracts/MintableUpgradeable.sol';
+import './abstracts/WListableUpgradeable.sol';
 
-contract SimpleNftUpgradeable is Controlable, WListable, Mintable {
+contract SimpleNftUpgradeable is ControlableUpgradeable, WListableUpgradeable, MintableUpgradeable {
   using Strings for uint256;
 
-  constructor(string memory name_, string memory symbol_, uint256 maxSupply_) Mintable(name_, symbol_, maxSupply_) {}
+  function __ControlableUpgradeable_init(string memory name_, string memory symbol_, uint256 maxSupply_) internal onlyInitializing {
+    __ControlableUpgradeable_init();
+    __MintableUpgradeable_init(name_, symbol_, maxSupply_);
+    __WListableUpgradeable_init();
+  }
 
   modifier ownerOrMintStarted() {
     require(owner() == _msgSender() || isStarted(), 'SimpleNft: caller is not the owner or mint not started');
