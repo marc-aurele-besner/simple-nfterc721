@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.8.1",
+    "@openzeppelin/contracts-upgradeable": "^4.8.1",
     "transaction-retry-tool": "^0.1.0"
   }
 }
