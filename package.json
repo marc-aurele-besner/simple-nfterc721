@@ -1,6 +1,6 @@
 {
   "name": "simple-nfterc721",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "description": "Simple ERC721 NFT with Merkle Proof for WhiteList, using Hardhat and Foundry",
   "author": "Marc-Aurele Besner <82244926+marc-aurele-besner@users.noreply.github.com>",
