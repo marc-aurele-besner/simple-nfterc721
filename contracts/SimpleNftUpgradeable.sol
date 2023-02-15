@@ -20,6 +20,11 @@ import './abstracts/WListableUpgradeable.sol';
 contract SimpleNftUpgradeable is ControlableUpgradeable, WListableUpgradeable, MintableUpgradeable {
   using Strings for uint256;
 
+  function initialize(string memory name_, string memory symbol_, uint256 maxSupply_) external initializer {
+    __ControlableUpgradeable_init(name_, symbol_, maxSupply_);
+  }
+
+
   function __ControlableUpgradeable_init(string memory name_, string memory symbol_, uint256 maxSupply_) internal onlyInitializing {
     __ControlableUpgradeable_init();
     __MintableUpgradeable_init(name_, symbol_, maxSupply_);
