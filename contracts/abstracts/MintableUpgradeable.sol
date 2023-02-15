@@ -14,8 +14,8 @@ import '@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol';
 // Public: 2 per address (WL can min public also)
 
 abstract contract MintableUpgradeable is ERC721Upgradeable {
-  uint256 private maxSupply = 0;
-  uint256 private mintCount = 0;
+  uint256 private maxSupply;
+  uint256 private mintCount;
 
   mapping(address => uint8) private _WLminted;
   mapping(address => uint8) private _minted;
