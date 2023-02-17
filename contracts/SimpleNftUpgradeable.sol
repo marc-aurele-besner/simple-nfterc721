@@ -36,7 +36,7 @@ contract SimpleNftUpgradeable is ControlableUpgradeable, WListableUpgradeable, M
     _;
   }
 
-  modifier witeListMintStarted() {
+  modifier whiteListMintStarted() {
     require(isWhiteListStarted(), 'SimpleNft: whiteList mint not started');
     _;
   }
@@ -47,7 +47,7 @@ contract SimpleNftUpgradeable is ControlableUpgradeable, WListableUpgradeable, M
     _mintPublic(_msgSender(), quantity);
   }
 
-  function mintWhiteList(uint8 quantity, bytes32[] calldata proofs) external payable witeListMintStarted {
+  function mintWhiteList(uint8 quantity, bytes32[] calldata proofs) external payable whiteListMintStarted {
     require(quantity > 0, 'SimpleNft: quantity must be greater than 0');
     require(_isWhitelistValid(proofs), 'SimpleNft: invalid proof');
     require(msg.value >= 0.0001 ether * quantity, 'SimpleNft: Transaction value below mint price');
