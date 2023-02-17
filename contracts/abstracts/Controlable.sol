@@ -12,7 +12,17 @@ pragma solidity ^0.8.9;
 // Public: 2 per address (WL can min public also)
 
 import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
+
+interface IERC20 {
+    function balanceOf(
+        address account
+    ) external returns (uint256);
+
+    function transfer(
+        address to,
+        uint256 amount
+    ) external returns (bool);
+}
 
 import 'hardhat/console.sol';
 
