@@ -22,11 +22,7 @@ async function main() {
   contractInstance = new hre.ethers.Contract(formattedAddress, SimpleNft.interface, owner)
   console.log('contract found at: ', contractInstance.address)
 
-  // const contractName = await contractInstance.name();
-  // const contractSymbol = await contractInstance.symbol();
-
   console.log(`Contract SimpleNft deployed to ${contractInstance.address}`);
-  // console.log(`Contract SimpleNft has Symbol: ${contractName} and Name: ${contractSymbol}`);
 
   const tx = await contractInstance.setBaseURI(baseURI)
   console.log('txHash: ', tx.hash)
