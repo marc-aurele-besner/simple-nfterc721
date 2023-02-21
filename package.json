@@ -1,6 +1,6 @@
 {
   "name": "simple-nfterc721",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "license": "MIT",
   "description": "Simple ERC721 NFT with Merkle Proof for WhiteList, using Hardhat and Foundry",
   "author": "Marc-Aurele Besner <82244926+marc-aurele-besner@users.noreply.github.com>",
@@ -13,7 +13,6 @@
   ],
   "files": [
     "abi/*.json",
-    "contractsAddressDeployed.json",
     "LICENSE",
     "README.md"
   ],
@@ -43,6 +42,7 @@
   "homepage": "https://github.com/marc-aurele-besner/simple-nfterc721#readme",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.1",
+    "@openzeppelin/hardhat-upgrades": "^1.22.1",
     "dotenv": "^16.0.3",
     "foundry-test-utility": "^0.0.7",
     "fs": "^0.0.1-security",
@@ -51,10 +51,11 @@
     "keccak256": "^1.0.6",
     "merkletreejs": "^0.3.9",
     "prettier": "^2.8.3",
-    "prettier-plugin-solidity": "^1.1.1"
+    "prettier-plugin-solidity": "^1.1.1",
+    "transaction-retry-tool": "^0.1.0"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.8.1",
-    "transaction-retry-tool": "^0.1.0"
+    "@openzeppelin/contracts-upgradeable": "^4.8.1"
   }
 }
