@@ -104,7 +104,7 @@ describe('SimpleNft', function () {
     await expect(hardhatNFT._baseURI); // pas sûr de la pertinence de ce test
   });
   //test si tokenId existe
-  it.only('Does the function tokenURI return a string of a non-existant tokenId?', async function () {
+  it('Does the function tokenURI return a string of a non-existant tokenId?', async function () {
     const { hardhatNFT } = await loadFixture(deployNFTFixture);
 
     const tokenURI = await hardhatNFT.tokenURI(3);
