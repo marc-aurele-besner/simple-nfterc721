@@ -2,7 +2,9 @@ const { expect } = require('chai');
 const { ethers } = require('hardhat');
 const { loadFixture } = require('@nomicfoundation/hardhat-network-helpers');
 
-describe('SimpleNft', function () {
+const Helper = require('./shared');
+
+describe('SimpleNft - Mathilde -1', function () {
   it('Deployment should assign the total supply of NFT to the owner', async function () {
     const [owner] = await ethers.getSigners();
 
@@ -15,29 +17,32 @@ describe('SimpleNft', function () {
   });
 });
 
-//erreur: TypeError: hardhatToken.transfer is not a function
-//Using a different account than the owner
-it('Should transfer NFT between accounts', async function () {
-  const [owner, addr1, addr2] = await ethers.getSigners();
+describe('SimpleNft - Mathilde-2', function () {
+  //erreur: TypeError: hardhatToken.transfer is not a function
+  //Using a different account than the owner
+  it('Should transfer NFT between accounts', async function () {
+    const [owner, addr1, addr2] = await ethers.getSigners();
 
-  const Token = await ethers.getContractFactory('SimpleNft');
+    const Token = await ethers.getContractFactory('SimpleNft');
 
-  const hardhatToken = await Token.deploy('SimpleNft', 'SNFT', 1000);
+    const hardhatToken = await Token.deploy('SimpleNft', 'SNFT', 1000);
 
-  // Transfer 1 NFT from owner to addr1:
-  await hardhatToken.transfer(addr1.address, 1);
-  expect(await hardhatToken.balanceOf(addr1.address)).to.equal(1);
+    await hardhatToken.mint(1, { value: ethers.utils.parseEther('0.5')});
 
-  // Transfer 1 NFT from addr1 to addr2:
-  await hardhatToken.connect(addr1).transfer(addr2.address, 1);
-  expect(await hardhatToken.balanceOf(addr2.address)).to.equal(1);
+    // Transfer 1 NFT from owner to addr1:
+    await hardhatToken.transferFrom(owner.address, addr1.address, 1);
+    expect(await hardhatToken.balanceOf(addr1.address)).to.equal(1);
+
+    // Transfer 1 NFT from addr1 to addr2:
+    await hardhatToken.connect(addr1).transferFrom(addr1.address, addr2.address, 1);
+    expect(await hardhatToken.balanceOf(addr2.address)).to.equal(1);
+  });
 });
-
 //
 
 // essai d'utilisation de loadFixture
 
-describe('SimpleNft', function () {
+describe('SimpleNft - Mathilde-3', function () {
   async function deployNFTFixture() {
     const NFT = await ethers.getContractFactory('SimpleNft');
     const [owner, addr1, addr2] = await ethers.getSigners();
@@ -59,17 +64,22 @@ describe('SimpleNft', function () {
   it('Should transfer NFT between accounts', async function () {
     const { hardhatNFT, owner, addr1, addr2 } = await loadFixture(deployNFTFixture);
 
+    await hardhatNFT.mint(1, { value: ethers.utils.parseEther('0.5')});
+    await hardhatNFT.transferFrom(owner.address, addr1.address, 0);
+    
     // Transfer 1 NFT from owner to addr1
-    await expect(hardhatNFT.transfer(addr1.address, 1)).to.changeNFTBalances(hardhatNFT, [owner, addr1], [-1, 1]);
+    await expect(await hardhatNFT.ownerOf(0)).to.be.equal(addr1.address);
+
+    await hardhatNFT.transferFrom(addr1.address, addr2.address, 0);
 
     // Transfer 1 NFT from addr1 to addr2 (another account than the default one)
-    await expect(hardhatNFT.connect(addr1).transfer(addr2.address, 1)).to.changeNFTBalances(hardhatNFT, [addr1, addr2], [-1, 1]);
+    await expect(await hardhatNFT.ownerOf(0)).to.be.equal(addr2.address);
   });
 });
 
 // test Controlable.sol avec URI:
 
-describe('SimpleNft', function () {
+describe('SimpleNft - Mathilde-4', function () {
   it('Does the function contractURI return the string _contractURI?', async function () {
     const NFT = await ethers.getContractFactory('SimpleNft');
 
@@ -85,7 +95,7 @@ describe('SimpleNft', function () {
 //setBaseURI x2
 //_extensionURI
 
-describe('SimpleNft', function () {
+describe('SimpleNft - Mathilde-5', function () {
   async function deployNFTFixture() {
     const NFT = await ethers.getContractFactory('SimpleNft');
     const [owner, addr1, addr2] = await ethers.getSigners();

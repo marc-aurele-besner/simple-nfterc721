@@ -6,7 +6,7 @@ const Helper = require('./shared');
 const { ethers } = require('hardhat');
 let contract;
 
-describe('Simple NFT', function () {
+describe('Simple NFT - Enzo', function () {
   before(async function () {
     [provider, owner, user1, user2, user3] = await Helper.setupProviderAndAccount();
   });
@@ -137,9 +137,11 @@ describe('Simple NFT', function () {
   it('Does anyone can update contract uri? (should not)', async function () {
     expect(await contract.contractURI()).to.equal('');
 
-    await contract.connect(user2).setContractURI('Test New ContractURI');
+    const input = await contract.connect(user2).populateTransaction.setContractURI('Test New ContractURI');
 
-    expect(await contract.contractURI()).to.equal('Test New ContractURI');
+    Helper.checkRawTxnResult(input, user2, 'Ownable: caller is not the owner')
+
+    expect(await contract.contractURI()).to.equal('');
   });
 
   it('Does anyone can update base uri? (should not)', async function () {
