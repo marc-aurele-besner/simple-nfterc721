@@ -1,0 +1,13 @@
+{
+    "name": "SimpleNftf #1",
+    "description": "SimpleNft - Collection 1",
+    "image": "ipfs://QmWzS8Azwrq5DgcHuArqnGw2bHUwAeSUu6ipW7KTA6R35F/1.png",
+    "edition": 1,
+    "date": 1637958625864,
+    "attributes": [
+      {
+        "trait_type": "Background",
+        "value": "SeaDarkSky"
+      }
+    ]
+  }
