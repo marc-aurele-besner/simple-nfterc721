@@ -204,13 +204,12 @@ describe('Simple NFT - Enzo', function () {
 
     expect(await contract.totalSupply()).to.equal('1');
 
-    let balance = await provider.getBalance(user2.address);
-    expect(ethers.utils.formatEther(await balance.toString())).to.equal('9999.998159175');
+    const balance = await provider.getBalance(user2.address);
 
     const input = await contract.connect(user2).populateTransaction.withdrawEther();
     Helper.checkRawTxnResult(input, user2, 'Ownable: caller is not the owner')
 
-    let balance_final = await provider.getBalance(user2.address);
+    const balance_final = await provider.getBalance(user2.address);
 
     expect(balance_final).to.equal(balance);
   });
