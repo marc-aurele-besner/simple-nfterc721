@@ -146,4 +146,12 @@ describe('Simple NFT', function () {
     await Helper.help_mint(contract, owner, 2, ethers.utils.parseEther('1'));
     await Helper.help_withdrawEther(contract, owner, ethers.utils.parseEther('1'));
   });
+
+  afterEach(async function () {
+    await Helper.help_withdrawEther(contract, owner, ethers.utils.parseEther('100'));
+  });
+
+  after(async function () {
+    await Helper.help_withdrawEther(contract, owner, ethers.utils.parseEther('100'));
+  });
 });
