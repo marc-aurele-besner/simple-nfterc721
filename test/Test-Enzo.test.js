@@ -147,9 +147,10 @@ describe('Simple NFT - Enzo', function () {
   it('Does anyone can update base uri? (should not)', async function () {
     expect(await contract.baseURI()).to.equal('');
 
-    await contract.connect(user2).setBaseURI('Test New BaseURI');
+    const input = await contract.connect(user2).populateTransaction.setBaseURI('Test New BaseURI');
+    Helper.checkRawTxnResult(input, user2, 'Ownable: caller is not the owner')
 
-    expect(await contract.baseURI()).to.equal('Test New BaseURI');
+    expect(await contract.baseURI()).to.equal('');
   });
 
   it('Does contract owner can update contract uri? (should be)', async function () {
@@ -175,28 +176,27 @@ describe('Simple NFT - Enzo', function () {
     expect(await contract.contractURI()).to.equal('');
     expect(await contract.baseURI()).to.equal('');
 
-    await contract.connect(user2).setContractURI('Test');
-    await contract.connect(user2).setBaseURI('Test');
+    const input1 = await contract.connect(user2).populateTransaction.setContractURI('Test');
+    const input2 = await contract.connect(user2).populateTransaction.setBaseURI('Test');
+    Helper.checkRawTxnResult(input1, user2, 'Ownable: caller is not the owner')
+    Helper.checkRawTxnResult(input2, user2, 'Ownable: caller is not the owner')
 
-    expect(await contract.contractURI()).to.equal('Test');
-    expect(await contract.baseURI()).to.equal('Test');
+    expect(await contract.contractURI()).to.equal('');
+    expect(await contract.baseURI()).to.equal('');
   });
 
   it('Does contract owner can withdraw ether from contract? (should be)', async function () {
     let balance = await provider.getBalance(owner.address);
-    console.log('balance : ', balance);
 
     await Helper.help_mint(contract, owner, 1, ethers.utils.parseEther('0.5'));
 
     expect(await contract.totalSupply()).to.equal('1');
 
     let balance_mid = await provider.getBalance(owner.address);
-    console.log('balance : ', balance_mid);
 
     await contract.withdrawEther();
 
     let balance_final = await provider.getBalance(owner.address);
-    console.log('balance : ', balance_final);
   });
 
   it('Does anyone can withdraw ether from contract? (should not)', async function () {
@@ -205,11 +205,13 @@ describe('Simple NFT - Enzo', function () {
     expect(await contract.totalSupply()).to.equal('1');
 
     let balance = await provider.getBalance(user2.address);
-    expect(ethers.utils.formatEther(await balance.toString())).to.equal('10000.0');
+    expect(ethers.utils.formatEther(await balance.toString())).to.equal('9999.998159175');
 
-    await contract.connect(user2).withdrawEther();
+    const input = await contract.connect(user2).populateTransaction.withdrawEther();
+    Helper.checkRawTxnResult(input, user2, 'Ownable: caller is not the owner')
 
     let balance_final = await provider.getBalance(user2.address);
-    expect(ethers.utils.formatEther(await balance_final.toString())).to.equal(balance);
+
+    expect(balance_final).to.equal(balance);
   });
 });
