@@ -46,13 +46,13 @@
     "dotenv": "^16.0.3",
     "foundry-test-utility": "^0.0.7",
     "fs": "^0.0.1-security",
-    "hardhat": "^2.12.6",
-    "hardhat-awesome-cli": "^0.0.23",
+    "hardhat": "^2.12.7",
+    "hardhat-awesome-cli": "^0.1.1",
     "keccak256": "^1.0.6",
     "merkletreejs": "^0.3.9",
-    "prettier": "^2.8.3",
-    "prettier-plugin-solidity": "^1.1.1",
-    "transaction-retry-tool": "^0.1.0"
+    "prettier": "^2.8.4",
+    "prettier-plugin-solidity": "^1.1.2",
+    "transaction-retry-tool": "^0.1.1"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.8.1",
