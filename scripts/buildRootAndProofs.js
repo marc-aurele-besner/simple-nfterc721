@@ -9,45 +9,45 @@ const foundryTestFileExtension = 't.sol';
 const foundryTestDataFilePath = `${foundryTestFolderPath}/${foundryTestDataFileName}.${foundryTestFileExtension}`;
 
 async function main() {
-    console.log(
-        '\x1b[36m%s\x1b[0m',
-        constants.FIGLET_NAME,
-        '\x1b[33m',
-        'Building ' + foundryTestDataFileName + '.' + foundryTestFileExtension + '...',
-        '\x1b[0m'
-    );
+  console.log(
+    '\x1b[36m%s\x1b[0m',
+    constants.FIGLET_NAME,
+    '\x1b[33m',
+    'Building ' + foundryTestDataFileName + '.' + foundryTestFileExtension + '...',
+    '\x1b[0m'
+  );
 
-    const addressesWhiteList = [];
-    for (let i = 11; i <= 20; i++) {
-        addressesWhiteList.push(`0x00000000000000000000000000000000000000${i}`);
+  const addressesWhiteList = [];
+  for (let i = 11; i <= 20; i++) {
+    addressesWhiteList.push(`0x00000000000000000000000000000000000000${i}`);
+  }
+
+  const rootWhiteList = await functions.returnBuildRoot(addressesWhiteList);
+
+  const proofsWhiteList = [];
+
+  let solidityProofsWhiteList = '';
+
+  let solidityTestUsersWhiteList = '';
+
+  console.log('rootWhiteLis', rootWhiteList);
+
+  for (let i = 11; i <= 20; i++) {
+    const proofs = await functions.returnBuildProof(`0x00000000000000000000000000000000000000${i}`, addressesWhiteList);
+    proofsWhiteList.push(proofs);
+    solidityTestUsersWhiteList += `  address user${i} = 0x00000000000000000000000000000000000000${i};\n`;
+    solidityProofsWhiteList += `    // Proofs for WL user ${i}\n`;
+    for (let j = 0; j < proofs.length; j++) {
+      solidityProofsWhiteList += `    _ADDRESS${i}_WL_PROOFS.push(bytes32(${proofs[j]}));\n`;
     }
+  }
+  for (let i = 0; i < functions.getRandomInt(1, 10); i++) {
+    proofsWhiteList.push(`0x1100000000000000000000000000000000000000${i}`);
+  }
 
-    const rootWhiteList = await functions.returnBuildRoot(addressesWhiteList);
-
-    const proofsWhiteList = [];
-
-    let solidityProofsWhiteList = '';
-
-    let solidityTestUsersWhiteList = '';
-
-    console.log('rootWhiteLis', rootWhiteList);
-
-    for (let i = 11; i <= 20; i++) {
-        const proofs = await functions.returnBuildProof(`0x00000000000000000000000000000000000000${i}`, addressesWhiteList);
-        proofsWhiteList.push(proofs);
-        solidityTestUsersWhiteList += `  address user${i} = 0x00000000000000000000000000000000000000${i};\n`;
-        solidityProofsWhiteList += `    // Proofs for WL user ${i}\n`;
-        for (let j = 0; j < proofs.length; j++) {
-            solidityProofsWhiteList += `    _ADDRESS${i}_WL_PROOFS.push(bytes32(${proofs[j]}));\n`;
-        }
-    }
-    for (let i = 0; i < functions.getRandomInt(1, 10); i++) {
-        proofsWhiteList.push(`0x1100000000000000000000000000000000000000${i}`);
-    }
-
-    fs.writeFileSync(
-        foundryTestDataFilePath,
-        `// SPDX-License-Identifier: MIT
+  fs.writeFileSync(
+    foundryTestDataFilePath,
+    `// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 contract TestData {
@@ -71,17 +71,17 @@ ${solidityTestUsersWhiteList}
   constructor() {
 ${solidityProofsWhiteList} }
 }`
-    );
+  );
 
-    console.log('\x1b[32m', `${foundryTestDataFileName}.${foundryTestFileExtension} file created in foundry ${foundryTestFolderPath} folder`);
-    console.log('\x1b[0m', ` with ${addressesWhiteList.length} addresses in WhiteList`);
-    console.log('\x1b[0m', ` with ${proofsWhiteList.length} proofs in WhiteList`);
-    console.log('\x1b[0m', ` with WhiteList roots: ${rootWhiteList}`);
+  console.log('\x1b[32m', `${foundryTestDataFileName}.${foundryTestFileExtension} file created in foundry ${foundryTestFolderPath} folder`);
+  console.log('\x1b[0m', ` with ${addressesWhiteList.length} addresses in WhiteList`);
+  console.log('\x1b[0m', ` with ${proofsWhiteList.length} proofs in WhiteList`);
+  console.log('\x1b[0m', ` with WhiteList roots: ${rootWhiteList}`);
 }
 
 main()
-    .then(() => process.exit(0))
-    .catch((error) => {
-        console.error(error);
-        process.exit(1);
-    });
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

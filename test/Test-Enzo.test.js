@@ -139,7 +139,7 @@ describe('Simple NFT - Enzo', function () {
 
     const input = await contract.connect(user2).populateTransaction.setContractURI('Test New ContractURI');
 
-    Helper.checkRawTxnResult(input, user2, 'Ownable: caller is not the owner')
+    Helper.checkRawTxnResult(input, user2, 'Ownable: caller is not the owner');
 
     expect(await contract.contractURI()).to.equal('');
   });
@@ -148,7 +148,7 @@ describe('Simple NFT - Enzo', function () {
     expect(await contract.baseURI()).to.equal('');
 
     const input = await contract.connect(user2).populateTransaction.setBaseURI('Test New BaseURI');
-    Helper.checkRawTxnResult(input, user2, 'Ownable: caller is not the owner')
+    Helper.checkRawTxnResult(input, user2, 'Ownable: caller is not the owner');
 
     expect(await contract.baseURI()).to.equal('');
   });
@@ -178,8 +178,8 @@ describe('Simple NFT - Enzo', function () {
 
     const input1 = await contract.connect(user2).populateTransaction.setContractURI('Test');
     const input2 = await contract.connect(user2).populateTransaction.setBaseURI('Test');
-    Helper.checkRawTxnResult(input1, user2, 'Ownable: caller is not the owner')
-    Helper.checkRawTxnResult(input2, user2, 'Ownable: caller is not the owner')
+    Helper.checkRawTxnResult(input1, user2, 'Ownable: caller is not the owner');
+    Helper.checkRawTxnResult(input2, user2, 'Ownable: caller is not the owner');
 
     expect(await contract.contractURI()).to.equal('');
     expect(await contract.baseURI()).to.equal('');
@@ -207,7 +207,7 @@ describe('Simple NFT - Enzo', function () {
     const balance = await provider.getBalance(user2.address);
 
     const input = await contract.connect(user2).populateTransaction.withdrawEther();
-    Helper.checkRawTxnResult(input, user2, 'Ownable: caller is not the owner')
+    Helper.checkRawTxnResult(input, user2, 'Ownable: caller is not the owner');
 
     const balance_final = await provider.getBalance(user2.address);
 

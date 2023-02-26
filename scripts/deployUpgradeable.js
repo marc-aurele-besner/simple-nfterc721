@@ -12,11 +12,7 @@ async function main() {
   const [owner, address] = await hre.ethers.getSigners();
   const SimpleNft = await hre.ethers.getContractFactory('SimpleNftUpgradeable');
 
-  const simpleNft = await upgrades.deployProxy(SimpleNft, [
-    constants.TOKEN_NAME,
-    constants.TOKEN_SYMBOL,
-    constants.MAX_SUPPLY,
-  ]);
+  const simpleNft = await upgrades.deployProxy(SimpleNft, [constants.TOKEN_NAME, constants.TOKEN_SYMBOL, constants.MAX_SUPPLY]);
   console.log('txHash: ', simpleNft.deployTransaction.hash);
 
   const contractInstance = await simpleNft.deployed();

@@ -27,7 +27,7 @@ describe('SimpleNft - Mathilde-2', function () {
 
     const hardhatToken = await Token.deploy('SimpleNft', 'SNFT', 1000);
 
-    await hardhatToken.mint(1, { value: ethers.utils.parseEther('0.5')});
+    await hardhatToken.mint(1, { value: ethers.utils.parseEther('0.5') });
 
     // Transfer 1 NFT from owner to addr1:
     await hardhatToken.transferFrom(owner.address, addr1.address, 0);
@@ -64,9 +64,9 @@ describe('SimpleNft - Mathilde-3', function () {
   it('Should transfer NFT between accounts 2', async function () {
     const { hardhatNFT, owner, addr1, addr2 } = await loadFixture(deployNFTFixture);
 
-    await hardhatNFT.mint(1, { value: ethers.utils.parseEther('0.5')});
+    await hardhatNFT.mint(1, { value: ethers.utils.parseEther('0.5') });
     await hardhatNFT.transferFrom(owner.address, addr1.address, 0);
-    
+
     // Transfer 1 NFT from owner to addr1
     await expect(await hardhatNFT.ownerOf(0)).to.be.equal(addr1.address);
 
@@ -118,6 +118,6 @@ describe('SimpleNft - Mathilde-5', function () {
     const { hardhatNFT, owner } = await loadFixture(deployNFTFixture);
 
     const input = await hardhatNFT.populateTransaction.tokenURI(3);
-    Helper.checkRawTxnResult(input, owner, 'SimpleNft: URI query for nonexistent token')
+    Helper.checkRawTxnResult(input, owner, 'SimpleNft: URI query for nonexistent token');
   });
 });
