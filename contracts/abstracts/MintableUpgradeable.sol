@@ -3,16 +3,6 @@ pragma solidity ^0.8.9;
 
 import '@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol';
 
-// TotalSupply: 1000
-// Name: SimpleNft
-// Symbol: SNFT
-// PaymentType: ETH AND ERC20 USDC
-// StartPrice: 0.5 ETH or equivalent in USDC
-// How many WL: 100
-// How many reserved: 50 (free())
-// WL: 2 per address
-// Public: 2 per address (WL can min public also)
-
 abstract contract MintableUpgradeable is ERC721Upgradeable {
   uint256 private maxSupply;
   uint256 private mintCount;
@@ -68,6 +58,6 @@ abstract contract MintableUpgradeable is ERC721Upgradeable {
     _WLminted[to] += quantity;
     _mint(to, quantity);
   }
-  
+
   uint256[50] private __gap;
 }

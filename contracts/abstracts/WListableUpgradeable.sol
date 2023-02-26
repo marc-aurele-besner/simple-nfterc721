@@ -1,25 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-// TotalSupply: 1000
-// Name: SimpleNft
-// Symbol: SNFT
-// PaymentType: ETH AND ERC20 USDC
-// StartPrice: 0.5 ETH or equivalent in USDC
-// How many WL: 100
-// How many reserved: 50 (free())
-// WL: 2 per address
-// Public: 2 per address (WL can min public also)
-
 import '@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/utils/cryptography/MerkleProofUpgradeable.sol';
 
 abstract contract WListableUpgradeable is ContextUpgradeable {
   bytes32 private root;
 
-
-  function __WListableUpgradeable_init() internal onlyInitializing {
-  }
+  function __WListableUpgradeable_init() internal onlyInitializing {}
 
   /**
    * @dev Verify proofs against root for caller
@@ -46,6 +34,6 @@ abstract contract WListableUpgradeable is ContextUpgradeable {
   function _updateWhitelistRoot(bytes32 _root) internal virtual {
     root = _root;
   }
-  
+
   uint256[50] private __gap;
 }

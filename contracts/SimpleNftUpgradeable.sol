@@ -3,16 +3,6 @@ pragma solidity ^0.8.9;
 
 import '@openzeppelin/contracts/utils/Strings.sol';
 
-// TotalSupply: 1000
-// Name: SimpleNft
-// Symbol: SNFT
-// PaymentType: ETH AND ERC20 USDC
-// StartPrice: 0.5 ETH or equivalent in USDC
-// How many WL: 100
-// How many reserved: 50 (free())
-// WL: 2 per address
-// Public: 2 per address (WL can min public also)
-
 import './abstracts/ControlableUpgradeable.sol';
 import './abstracts/MintableUpgradeable.sol';
 import './abstracts/WListableUpgradeable.sol';
@@ -23,7 +13,6 @@ contract SimpleNftUpgradeable is ControlableUpgradeable, WListableUpgradeable, M
   function initialize(string memory name_, string memory symbol_, uint256 maxSupply_) external initializer {
     __ControlableUpgradeable_init(name_, symbol_, maxSupply_);
   }
-
 
   function __ControlableUpgradeable_init(string memory name_, string memory symbol_, uint256 maxSupply_) internal onlyInitializing {
     __ControlableUpgradeable_init();

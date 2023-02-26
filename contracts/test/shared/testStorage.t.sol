@@ -2,9 +2,9 @@
 pragma solidity ^0.8.0;
 
 contract TestStorage {
-    // Storage use for the tests.
-    bool _IS_SANDBOX;
-    uint8 _LOG_LEVEL;
+  // Storage use for the tests.
+  bool _IS_SANDBOX;
+  uint8 _LOG_LEVEL;
 
-    bytes32[] public _PROOFS;
+  bytes32[] public _PROOFS;
 }
