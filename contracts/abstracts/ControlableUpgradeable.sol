@@ -1,27 +1,19 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-// TotalSupply: 1000
-// Name: SimpleNft
-// Symbol: SNFT
-// PaymentType: ETH AND ERC20 USDC
-// StartPrice: 0.5 ETH or equivalent in USDC
-// How many WL: 100
-// How many reserved: 50 (free())
-// WL: 2 per address
-// Public: 2 per address (WL can min public also)
-
 import '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
-import '@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol';
 
-import 'hardhat/console.sol';
+interface IERC20 {
+  function balanceOf(address account) external returns (uint256);
+
+  function transfer(address to, uint256 amount) external returns (bool);
+}
 
 abstract contract ControlableUpgradeable is OwnableUpgradeable {
   uint256 private _startTimestamp;
   uint256 private _startWhitelistTimestamp;
   string private _contractURI;
   string private _baseURI;
-
 
   function __ControlableUpgradeable_init() internal onlyInitializing {
     __Ownable_init();
@@ -126,11 +118,11 @@ abstract contract ControlableUpgradeable is OwnableUpgradeable {
    *  - Verify that the caller is the owner
    */
   function withdrawERC20Token(address tokenAddres) external virtual onlyOwner returns (bool success) {
-    IERC20Upgradeable token = IERC20Upgradeable(tokenAddres);
+    IERC20 token = IERC20(tokenAddres);
     uint256 balance = token.balanceOf(address(this));
     require(token.transfer(msg.sender, balance), 'Controlable: Transfer failed');
     return true;
   }
-  
+
   uint256[50] private __gap;
 }

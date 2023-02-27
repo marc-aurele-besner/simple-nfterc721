@@ -15,24 +15,18 @@ async function main() {
 
   let contractInstance;
   if (hre.network.name === 'hardhat' || hre.network.name === 'localhost') {
-
-    const simpleNft = await upgrades.deployProxy(SimpleNft, [
-      constants.TOKEN_NAME,
-      constants.TOKEN_SYMBOL,
-      constants.MAX_SUPPLY,
-    ]);
+    const simpleNft = await upgrades.deployProxy(SimpleNft, [constants.TOKEN_NAME, constants.TOKEN_SYMBOL, constants.MAX_SUPPLY]);
     console.log('txHash: ', simpleNft.deployTransaction.hash);
 
     contractInstance = await simpleNft.deployed();
-
   } else {
     const contractAddress = '0x6f63fc5860f550329f5ba069795ee568466b003d';
     console.log('contractAddress: ', contractAddress);
     const formattedAddress = hre.ethers.utils.getAddress(contractAddress);
     console.log('formattedAddress: ', formattedAddress);
-    
-    contractInstance = new hre.ethers.Contract(formattedAddress, SimpleNft.interface, owner)
-    console.log('contract found at: ', contractInstance.address)
+
+    contractInstance = new hre.ethers.Contract(formattedAddress, SimpleNft.interface, owner);
+    console.log('contract found at: ', contractInstance.address);
   }
 
   const contractName = await contractInstance.name();

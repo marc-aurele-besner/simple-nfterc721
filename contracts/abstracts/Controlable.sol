@@ -1,30 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-// TotalSupply: 1000
-// Name: SimpleNft
-// Symbol: SNFT
-// PaymentType: ETH AND ERC20 USDC
-// StartPrice: 0.5 ETH or equivalent in USDC
-// How many WL: 100
-// How many reserved: 50 (free())
-// WL: 2 per address
-// Public: 2 per address (WL can min public also)
-
 import '@openzeppelin/contracts/access/Ownable.sol';
 
 interface IERC20 {
-    function balanceOf(
-        address account
-    ) external returns (uint256);
+  function balanceOf(address account) external returns (uint256);
 
-    function transfer(
-        address to,
-        uint256 amount
-    ) external returns (bool);
+  function transfer(address to, uint256 amount) external returns (bool);
 }
-
-import 'hardhat/console.sol';
 
 abstract contract Controlable is Ownable {
   uint256 private _startTimestamp;

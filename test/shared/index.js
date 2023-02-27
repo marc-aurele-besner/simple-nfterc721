@@ -5,9 +5,9 @@ const functions = require('./functions');
 const setup = require('./setup');
 
 module.exports = {
-    ...constants,
-    errors,
-    methods,
-    ...functions,
-    ...setup
+  ...constants,
+  errors,
+  methods,
+  ...functions,
+  ...setup
 };

@@ -76,5 +76,5 @@ contract TestData {
     // Proofs for WL user 20
     _ADDRESS20_WL_PROOFS.push(bytes32(0xa216c0a47b12c20d5ac5c381464a89521d8b0c1a5cb328aeabb29b70bc3347d4));
     _ADDRESS20_WL_PROOFS.push(bytes32(0x887bff9912643e4880619fcd56568ab95e9aed69d90b8b6f26674aaefda09528));
- }
+  }
 }

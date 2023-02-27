@@ -18,17 +18,17 @@ async function main() {
 
   const formattedAddress = hre.ethers.utils.getAddress(contractAddress);
   console.log('formattedAddress: ', formattedAddress);
-  
-  contractInstance = new hre.ethers.Contract(formattedAddress, SimpleNft.interface, owner)
-  console.log('contract found at: ', contractInstance.address)
+
+  contractInstance = new hre.ethers.Contract(formattedAddress, SimpleNft.interface, owner);
+  console.log('contract found at: ', contractInstance.address);
 
   console.log(`Contract SimpleNft deployed to ${contractInstance.address}`);
 
-  const tx = await contractInstance.setBaseURI(baseURI)
-  console.log('txHash: ', tx.hash)
+  const tx = await contractInstance.setBaseURI(baseURI);
+  console.log('txHash: ', tx.hash);
 
-  const receipt = await tx.wait()
-  console.log('isMined: ', receipt.status)
+  const receipt = await tx.wait();
+  console.log('isMined: ', receipt.status);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
