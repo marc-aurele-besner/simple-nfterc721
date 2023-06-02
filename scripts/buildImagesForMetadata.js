@@ -12,7 +12,7 @@ async function main() {
       for (let i = 0; i < constants.MAX_SUPPLY; i++) {
         console.log('\x1b[32m', `Building Image's for tokenId ${i}`, '\x1b[0m');
 
-        fs.copyFileSync(currentFolder + '/sample/0.jpg', `${currentFolder}/images/${i}.jpg`);
+        fs.copyFileSync(currentFolder + `/sample/${i}.jpg`, `${currentFolder}/images/${i}.jpg`);
       }
     } else throw new Error('Folder metaData/sample/0.jpg does not exist');
   } else throw new Error('Folder metaData/ and metaData/sample does not exist');
