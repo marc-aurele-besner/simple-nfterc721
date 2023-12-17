@@ -44,7 +44,7 @@
   },
   "homepage": "https://github.com/marc-aurele-besner/simple-nfterc721#readme",
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^2.0.1",
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "@openzeppelin/hardhat-upgrades": "^1.22.1",
     "dotenv": "^16.0.3",
     "foundry-test-utility": "^0.1.0",
